@@ -21,6 +21,7 @@ function App() {
       <Route path='/' element={<Homepage />} />
       <Route path='/form' element={<Form />} />
       <Route path='/laptop' element={<Laptop />} />
+      <Route path='/success' element={<Success />} />
       </Routes>
       </Router>  
     </div>

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { isNonNullObject } from '@apollo/client/utilities';
 import { useParams } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 const Employee = () => {
 
@@ -89,6 +90,12 @@ const Employee = () => {
                 <br />
                 <input style={{width: "500px"}} refs="phone" type="text" size="30" placeholder="Phone" />
             </form>
+            <Link to="/laptop">
+            <button 
+            className='btn btn-info m-5 px-5 py-2'>
+            Next 
+            </button>
+            </Link>
         </div>
     )
 }
