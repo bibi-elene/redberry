@@ -104,11 +104,12 @@ const Employee = () => {
 
     })
 
-    let selectTeams = document.getElementById('teams');
-    let selectPositions = document.getElementById('positions');
+ // Current value of selected Team
+ // For filtering the positions options
 
-    for (let i = 0; i < teams.length; i++){
-        
+    if (teams) {
+        var select = document.getElementById('teams');
+        var selectedValue = select.options[select.selectedIndex].value;
     }
 
     
@@ -153,13 +154,15 @@ const Employee = () => {
                     <div className='row justify-content-center my-5'>
                         <div className='form-group'>
                             <select id='teams' className='form-control' name='team'
+                            
                             { ...formik.getFieldProps('team')}>
                                 <option name="team" value="" disabled hidden>თიმი</option>
-                                    {teams && teams.map(({id, name}) => (
-                                    <option name="team" key={id}>{name}</option>
-                                        )
-                                        )
+                                {teams && teams.map(({id, name}) => (
+                                 <option name="team" value={id} key={id}>{name}</option>
+                            )
+                            )
                                     }   
+
                             </select>
                                 {formik.touched.team && formik.errors.team 
                                 ?
@@ -174,11 +177,13 @@ const Employee = () => {
                         <select id='positions' className='form-control' name='position' 
                         { ...formik.getFieldProps('position')}>
                             <option name="position" value="" disabled hidden>პოზიცია</option>
-                                {positions && positions.map(({id, name, team_id}) => (
-                                <option key={id}>{name}</option>
-                                    )
-                                    )
-                                }
+                            {positions && positions.map(({id, name, team_id}) => (
+                            team_id == selectedValue ?
+                            <option key={id}>{name}</option>
+                            : null
+                            )
+                            )
+                            }
                         </select>
                                 {formik.touched.position && formik.errors.position 
                                 ?
