@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import logo from '../logo.png'
+import layer from '../Layer1.png'
+import logo from '../LOGO-02 1.png'
 import Laptop from './laptop';
 import Employee from './employee';
 import Success from './success';
@@ -10,12 +11,16 @@ import { Link } from "react-router-dom";
 const Homepage = () => {
 
     return (
-        <div className="container justify-content-center">
-
-            <img src={logo} alt='main-logo' width="auto" style={{maxWidth: "100%"}}></img>
-            <div className="justify-content-center col-12">
-            <Link to="/form">
-            <button className='btn btn-info m-3 px-5 py-3'
+        <div className="container m-5 justify-content-center align-items-center">
+            <div className=''>
+            <img className='' width="auto" src={logo} alt="logo"></img>
+            </div>
+            <div>
+            <img className='p-5 justify-content-center text-center' src={layer} alt='hero' width="100%" style={{maxWidth: "800px"}}></img>
+            </div>
+            <div className="justify-content-center ">
+            <Link to="/employee">
+            <button className='btn btn-info my-3 px-5 py-3'
              id="btn-add" style={{width: "300px"}} 
             
              > 
@@ -23,7 +28,7 @@ const Homepage = () => {
             </Link>
             </div>
 
-            <div className="justify-content-center col-12">
+            <div className="justify-content-center ">
             <button className='btn btn-info px-5 py-3' 
             id="btn-data" style={{width: "300px"}}> 
             ჩანაწერის სია </button>

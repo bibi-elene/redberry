@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import '../App.css';
 import Form from './form'
 import {Link} from "react-router-dom";
+import { useFormik } from 'formik';
+import { validate } from 'graphql';
 
 
 
@@ -43,13 +45,9 @@ const Laptop = () => {
 
     return (
         <>
-        <div className='row mt-5'>
-            <h2 className='col-6 text-end'> თანამშრომლის ინფო</h2>
-            <h2 className='col-6 text-start'> ლეპტოპის მახასიათებლები</h2>
-        </div>
-
-        <div className='row justify-content-center' >
-            <div className='row file-form m-5 justify-content-center' style={{width: "auto", maxWidth: 650, maxHeight: 400}}>
+        <Form />
+        <div className='row mt-2 justify-content-center' style={{fontSize: "12px"}}>
+            <div className='row file-form m-4 justify-content-center' style={{width: "auto", maxWidth: 600, maxHeight: 280}}>
             <label htmlFor="files col"><i className="bi bi-exclamation-triangle"></i></label> <br />         
             <label htmlFor="files col" className="mb-4">ჩააგდე ან ატვირთე ლეპტოპის ფოტო <br /> </label>
             <label htmlFor="files col" style={{zIndex:1, width: 150}} className='btn btn-info mt-3'>ატვირთე</label>
@@ -57,7 +55,7 @@ const Laptop = () => {
                 </div>
 
     <div className='row justify-content-center '>
-        <form className='m-5' style={{maxWidth: 650}}>
+        <form className='m-5' style={{maxWidth: 600}}>
             <div className='row'>
                 <label className='text-start'>ლეპტოპის სახელი</label>
                 <div className='form-group col-6'>
@@ -147,9 +145,9 @@ const Laptop = () => {
             </div>
         </div>
 
-        <div className="row my-5"> 
+        <div className="row my-4"> 
             <Link to="/form" className='col-6 text-start'>
-                <p className=''>უკან</p>
+                <p className='back'>უკან</p>
             </Link>
 
             <Link to="/success" className='col-6 text-end'>

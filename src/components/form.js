@@ -7,10 +7,9 @@ const Form = () => {
     const [page, setPage] = useState(0);
 
     return (
-        <div className='row mt-5'>
+        <div className='row my-5'>
             <h2 className='col-6 text-end'> თანამშრომლის ინფო</h2>
             <h2 className='col-6 text-start'> ლეპტოპის მახასიათებლები</h2>
-            <Employee />
         </div>
     )
 }
