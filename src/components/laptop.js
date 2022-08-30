@@ -73,10 +73,10 @@ const Laptop = () => {
         cpuprop1: localStorage.getItem('cpuprop1') == 'undefined' ? '' : localStorage.getItem('cpuprop1'),
         cpuprop2: localStorage.getItem('cpuprop2') == 'undefined' ? '' : localStorage.getItem('cpuprop2'),
         ram: localStorage.getItem('ram') == 'undefined' ? '' : localStorage.getItem('ram'),
-        memoryType: localStorage.getItem('memoryType') == 'undefined' ? '' : localStorage.getItem('memoryType'),
+        //memoryType: localStorage.getItem('memoryType') == 'undefined' ? '' : localStorage.getItem('memoryType'),
         date: localStorage.getItem('date') == 'undefined' ? '' : localStorage.getItem('date'),
         price: localStorage.getItem('price') == 'undefined' ? '' : localStorage.getItem('price'),
-        condition: localStorage.getItem('condition') == 'undefined' ? '' : localStorage.getItem('condition')
+        //condition: localStorage.getItem('condition') == 'undefined' ? '' : localStorage.getItem('condition')
     }
 
     const onSubmit = (values) => {
@@ -93,10 +93,10 @@ const Laptop = () => {
         if(!values.cpuprop1) {errors.cpuprop1 = "Required"}
         if(!values.cpuprop2) {errors.cpuprop2 = "Required"}
         if(!values.ram) {errors.ram = "Required"}
-        if(!values.memoryType) {errors.memoryType = "Required"}
+        //if(!values.memoryType) {errors.memoryType = "Required"}
         if(!values.date) {errors.date = "Required"}
         if(!values.price) {errors.price = "Required"}
-        if(!values.condition) {errors.condition = "Required"}
+        //if(!values.condition) {errors.condition = "Required"}
 
 
         return errors;
@@ -107,6 +107,8 @@ const Laptop = () => {
         onSubmit, 
         validate
     })
+
+
 
     if (loading) return "Loading ..."
     if (error) return "Error: "
@@ -120,47 +122,83 @@ const Laptop = () => {
     <div className='row justify-content-center '>
         <form onSubmit={formik.handleSubmit} className='m-5' style={{maxWidth: 600}}>
 
-            <div className='row file-form m-4 justify-content-center' style={{width: "auto", maxWidth: 600, maxHeight: 280}}>
-            <label htmlFor="files col"><i className="bi bi-exclamation-triangle"></i></label> <br />         
-            <label htmlFor="files col" className="mb-4">ჩააგდე ან ატვირთე ლეპტოპის ფოტო <br /> </label>
-            <label htmlFor="files col" style={{zIndex:1, width: 150}} className='btn btn-info mt-3'>ატვირთე</label>
-            <input style={{zIndex:1}} className='col-12' type="file" id="files"/>
-                </div>
+           
 
             <div className='row'>
-                <label className='text-start'>ლეპტოპის სახელი</label>
                 <div className='form-group col-6'>
-                <input id='pcName' name="pcName" className='form-control' pattern=".{3,}" required title="3 characters minimum" type="text"/>
+                <label className='text-start' style={{float: "left"}}>ლეპტოპის სახელი</label>
+                <input name="pcname" id='pcName' className='form-control' type="text"
+                 { ...formik.getFieldProps('pcname')}
+                 />
+                 {formik.touched.pcname && formik.errors.pcname 
+                 ? 
+                 <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.pcname}</small>                        
+                 :
+                 <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
+                 }  
                 </div>
 
-                <div className='form-group col-6'>
-                <select defaultValue="" className='form-control' required>
+                <div className='form-group col-6' style={{marginTop: "18px"}}>
+                <select defaultValue="" name='pcbrand' className='form-control' required
+                { ...formik.getFieldProps('pcbrand')}
+                >
+                        
                     <option value="" disabled hidden>ლეპტოპის ბრენდი</option>
                         {brand && brand.map(({id, name, team_id}) => (
                             <option key={id}>{name}</option>
                         ))}
                 </select>
+                        {formik.touched.pcbrand && formik.errors.pcbrand 
+                        ? 
+                        <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.pcbrand}</small>                        
+                        :
+                        <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
+                        }  
                 </div>
             </div>
 
-            <div className='row'>
-                <div className='form-group col-4 my-3'>
-                <select defaultValue="" className='form-control' required>
+            <div className='row my-4'>
+                <div className='form-group col-4' style={{marginTop: "34px"}}>
+                <select name='cpu' defaultValue="" className='form-control' required
+                    { ...formik.getFieldProps('cpu')}
+                    >
                     <option value="" disabled hidden>CPU</option>
                         {cpu && cpu.map(({id, name}) => (
                             <option key={id}>{name}</option>
                         ))}
                 </select>
+                        {formik.touched.cpu && formik.errors.cpu 
+                        ? 
+                        <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.cpu}</small>                        
+                        :
+                        <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
+                        }  
                 </div>
 
-                <div className='form-group col-4 my-3'>
-                <input className='form-control' type="number" name="someid" />
-                <small id="emailHelp" className="form-text text-muted" style={{float: "left"}}>მხოლოდ ციფრები</small>
+                <div className='form-group col-4 '>
+                <label className='pb-3' style={{float: "left"}}>CPU-ს ბირთვი</label>
+                <input className='form-control' type="number" id='cpuprop1' name="cpuprop1" 
+                { ...formik.getFieldProps('cpuprop1')}
+                />
+                {formik.touched.cpuprop1 && formik.errors.cpuprop1 
+                ? 
+                <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.cpuprop1}</small>                        
+                :
+                <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
+                }  
                 </div>
 
-                <div className='form-group col-4 my-3'>
-                <input className='form-control' type="number" name="someid" />
-                <small id="emailHelp" className="form-text text-muted"  style={{float: "left"}}>მხოლოდ ციფრები</small>
+                <div className='form-group col-4 '>
+                <label className='pb-3' style={{float: "left"}}>CPU-ს ნაკადი</label>
+                <input className='form-control' type="number" name="cpuprop2" 
+                { ...formik.getFieldProps('cpuprop2')}
+                />
+                {formik.touched.cpuprop2 && formik.errors.cpuprop2
+                ? 
+                <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.cpuprop2}</small>                        
+                :
+                <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
+                }  
                 </div>
 
             </div>
@@ -168,8 +206,15 @@ const Laptop = () => {
             <div className='row'>
             <div className='form-group col-6 my-3'>
                 <label className='pb-3' style={{float: "left"}}>ლეპტოპის RAM (GB)</label>
-                <input className='form-control' type="number" name="someid" />
-                <small id="emailHelp" className="form-text text-muted"  style={{float: "left"}}>მხოლოდ ციფრები</small>
+                <input className='form-control' type="number" name="ram" 
+                { ...formik.getFieldProps('ram')}
+                />
+                {formik.touched.ram && formik.errors.ram 
+                ? 
+                <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.ram}</small>                        
+                :
+                <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
+                }  
                 </div>
             
             <div className='form-group col-6 my-3 text-start'>
@@ -191,27 +236,44 @@ const Laptop = () => {
                 <div className='form-group col-6 my-3'>
                 <label htmlFor="purchase" style={{float: "left"}}>შეძენის რიცხვი (არჩევითი)</label>
                 <br />
-                <input className='form-control mt-3' type="date" id="birthday" name="birthday"/>
+                <input name='date' className='form-control mt-3' type="date"
+                { ...formik.getFieldProps('date')}
+                />
+                {formik.touched.date && formik.errors.date 
+                ? 
+                <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.date}</small>                        
+                :
+                <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
+                }  
                 </div>
 
                 <div className='form-group col-6 my-3'>
                 <label className='pb-3' style={{float: "left"}}>ლეპტოპის ფასი</label>
                 <br />
-                <input className='form-control' type="number" name="someid" />
-                <small id="emailHelp" className="form-text text-muted" style={{float: "left"}}>მხოლოდ ციფრები</small>
+                <input className='form-control' type="number" name="price" 
+                { ...formik.getFieldProps('price')}
+                />
+                {formik.touched.price && formik.errors.price 
+                ? 
+                <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.price}</small>                        
+                :
+                <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
+                }  
+                
                 </div>
             </div>
+
         <div className="row justify-content-start text-start">
             <div className='form-group col-6 my-3'>
-                <label className='pb-4'>მეხსიერების ტიპი</label>
+                <label className='pb-4'>ლეპტოპის მდგომარეობა</label>
                 <br />
                 <div className="form-check form-check-inline">
                 <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
-                <label className="form-check-label" htmlFor="inlineRadio1">SSD</label>
+                <label className="form-check-label" htmlFor="inlineRadio1">ახალი</label>
                 </div>
                 <div className="form-check form-check-inline">
                 <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
-                <label className="form-check-label" htmlFor="inlineRadio2">HDD</label>
+                <label className="form-check-label" htmlFor="inlineRadio2">მეორადი</label>
                 </div>
             </div>
         </div>
