@@ -4,6 +4,8 @@ import Form from './form'
 import {Link} from "react-router-dom";
 import { useFormik } from 'formik';
 import { validate } from 'graphql';
+import { useNavigate } from 'react-router-dom'
+
 
 
 
@@ -13,25 +15,45 @@ const Laptop = () => {
     const cpuUrl = 'https://pcfy.redberryinternship.ge/api/cpus'
     let [brand, setBrand] = useState(null);
     let [cpu, setCpu] = useState(null);
-    const test = ['Peach'];
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const fetchBrands = () => {
         fetch(brandUrl)
         .then((res) => {
-            return res.json();
+            if(res.ok){  
+                return res.json();
+            }
         })
         .then((data) => {
             setBrand(data.data);
+        })
+        .catch((error) => {
+            console.error('Error loading data', error);
+            setError(error)
+        }) 
+        .finally(() => {
+            setLoading(false);
         })
     }
 
     const fetchCpu = () => {
         fetch(cpuUrl)
         .then((res) => {
-            return res.json();
+            if(res.ok){ 
+                return res.json();
+            }
         })
         .then((data) => {
             setCpu(data.data);
+        })
+        .catch((error) => {
+            console.error('Error loading data', error);
+            setError(error)
+        }) 
+        .finally(() => {
+            setLoading(false);
         })
     }
 
@@ -43,10 +65,61 @@ const Laptop = () => {
         fetchCpu();
     }, []);
 
+    const initialValues = {
+        file: localStorage.getItem('file') == 'undefined' ? '' : localStorage.getItem('file'),
+        pcname: localStorage.getItem('pcname') == 'undefined' ? '' : localStorage.getItem('pcname'),
+        pcbrand: localStorage.getItem('pcbrand') == 'undefined' ? '' : localStorage.getItem('pcbrand'),
+        cpu: localStorage.getItem('cpu') == 'undefined' ? '' : localStorage.getItem('cpu'),
+        cpuprop1: localStorage.getItem('cpuprop1') == 'undefined' ? '' : localStorage.getItem('cpuprop1'),
+        cpuprop2: localStorage.getItem('cpuprop2') == 'undefined' ? '' : localStorage.getItem('cpuprop2'),
+        ram: localStorage.getItem('ram') == 'undefined' ? '' : localStorage.getItem('ram'),
+        memoryType: localStorage.getItem('memoryType') == 'undefined' ? '' : localStorage.getItem('memoryType'),
+        date: localStorage.getItem('date') == 'undefined' ? '' : localStorage.getItem('date'),
+        price: localStorage.getItem('price') == 'undefined' ? '' : localStorage.getItem('price'),
+        condition: localStorage.getItem('condition') == 'undefined' ? '' : localStorage.getItem('condition')
+    }
+
+    const onSubmit = (values) => {
+        console.log('Form data', values);
+        navigate('/success')
+    }
+
+    const validate = (values) => {
+        let errors = {};
+        if(!values.file) {errors.file = "Required"}
+        if(!values.pcname) {errors.pcname = "Required"}
+        if(!values.pcbrand) {errors.pcbrand = "Required"}
+        if(!values.cpu) {errors.cpu = "Required"}
+        if(!values.cpuprop1) {errors.cpuprop1 = "Required"}
+        if(!values.cpuprop2) {errors.cpuprop2 = "Required"}
+        if(!values.ram) {errors.ram = "Required"}
+        if(!values.memoryType) {errors.memoryType = "Required"}
+        if(!values.date) {errors.date = "Required"}
+        if(!values.price) {errors.price = "Required"}
+        if(!values.condition) {errors.condition = "Required"}
+
+
+        return errors;
+    }
+
+    const formik = useFormik({
+        initialValues, 
+        onSubmit, 
+        validate
+    })
+
+    if (loading) return "Loading ..."
+    if (error) return "Error: "
+
     return (
         <>
         <Form />
-        <div className='row mt-2 justify-content-center' style={{fontSize: "12px"}}>
+       
+    <div className='row mt-2 justify-content-center' style={{fontSize: "12px"}}>
+
+    <div className='row justify-content-center '>
+        <form onSubmit={formik.handleSubmit} className='m-5' style={{maxWidth: 600}}>
+
             <div className='row file-form m-4 justify-content-center' style={{width: "auto", maxWidth: 600, maxHeight: 280}}>
             <label htmlFor="files col"><i className="bi bi-exclamation-triangle"></i></label> <br />         
             <label htmlFor="files col" className="mb-4">ჩააგდე ან ატვირთე ლეპტოპის ფოტო <br /> </label>
@@ -54,8 +127,6 @@ const Laptop = () => {
             <input style={{zIndex:1}} className='col-12' type="file" id="files"/>
                 </div>
 
-    <div className='row justify-content-center '>
-        <form className='m-5' style={{maxWidth: 600}}>
             <div className='row'>
                 <label className='text-start'>ლეპტოპის სახელი</label>
                 <div className='form-group col-6'>
@@ -150,12 +221,11 @@ const Laptop = () => {
                 <p className='back'>უკან</p>
             </Link>
 
-            <Link to="/success" className='col-6 text-end'>
             <button 
+            type='submit'
             className='btn btn-info px-5 py-2'>
              დამახსოვრება
             </button>
-            </Link>
         </div>
 
                 </form>

@@ -3,7 +3,7 @@ import { isNonNullObject } from '@apollo/client/utilities';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
 import {Link} from 'react-router-dom';
-import { useFormik } from 'formik';
+import { useFormik, ErrorMessage } from 'formik';
 import { validate } from 'graphql';
 import Form from './form'
 import $ from 'jquery';
@@ -12,24 +12,33 @@ import Laptop from './laptop';
 
 
 const Employee = () => {
+
     const teamUrl = 'https://pcfy.redberryinternship.ge/api/teams';
     const positionUrl = 'https://pcfy.redberryinternship.ge/api/positions';
     const [teams, setTeams] = useState(null);
     const [positions, setPositions] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     let navigate = useNavigate();
 
 
     let fetchTeams = () => {
         fetch(teamUrl)
         .then((res) => {
+           if (res.ok){ 
             return res.json();
+           }
+           throw res;
         })
         .then((data) => {
            setTeams(data.data);
         })
         .catch((error) =>{
-            console.log("error fetching data");
+            console.error("error fetching data", error);
+            setError(error);
+        })
+        .finally(()=>{
+            setLoading(false);
         })
 
     }
@@ -37,13 +46,20 @@ const Employee = () => {
     let fetchPositions = () => {
         fetch(positionUrl)
         .then((res) => {
+           if (res.ok){ 
             return res.json();
+           }
+           throw res;
         })
         .then((data) => {
            setPositions(data.data);
         })
         .catch((error) =>{
-            console.log("error fetching data");
+            console.error("error fetching data", error);
+            setError(error);
+        })
+        .finally(()=>{
+            setLoading(false);
         })
 
     }
@@ -57,13 +73,14 @@ const Employee = () => {
         fetchPositions();
     }, []);
 
+
         const initialValues = {
             name: localStorage.getItem('name') == 'undefined' ? '' : localStorage.getItem('name'),
-            surname: '',
-            team: '',
-            position: '',
-            email: '',
-            phone: ''
+            surname: localStorage.getItem('surname') == 'undefined' ? '' : localStorage.getItem('surname'),
+            team: localStorage.getItem('team') == 'undefined' ? '' : localStorage.getItem('team'),
+            position: localStorage.getItem('position') == 'undefined' ? '' : localStorage.getItem('position'),
+            email: localStorage.getItem('email') == 'undefined' ? '' : localStorage.getItem('email'),
+            phone: localStorage.getItem('phone') == 'undefined' ? '' : localStorage.getItem('phone')
         }
 
         const onSubmit = (values) => {
@@ -87,6 +104,10 @@ const Employee = () => {
             onSubmit, 
             validate
         })
+
+        if (loading) return "Loading ..."
+        if (error) return "Error: "
+    
     
    
 
@@ -94,22 +115,36 @@ const Employee = () => {
  // For filtering the positions options
     if (teams){
         if (teams == undefined) {return 'error fetching data'}
+        var selectTeam = document.getElementById('team');
+        var selectPosition = document.getElementById('position');
 
-        var select = document.getElementById('teams');
-        var selectedTeamId = select.options[select.selectedIndex].id
-    }
+        if (selectTeam.options[selectTeam.selectedIndex]) {
+        var selectedTeamId = selectTeam.options[selectTeam.selectedIndex].id;
+        var selectedTeamValue = selectTeam.options[selectTeam.selectedIndex].value;
+        }
+        
+        if (selectPosition.options[selectPosition.selectedIndex]) {
+        var selectedPositionId = selectPosition.options[selectPosition.selectedIndex].id;
+        var selectedPositionValue = selectPosition.options[selectPosition.selectedIndex].value;
+        }
+        
+    }        
+        
 
 // Save current data to local storage
 // To not lose upon refresh
     window.onbeforeunload = function() {
         localStorage.setItem('name', $('#name').val());
+        localStorage.setItem('surname', $('#surname').val());
+            if (selectedTeamValue && selectedTeamValue !== undefined){
+                localStorage.setItem('team', $("#team").val());
+            } else {return null}
+            if (selectedTeamValue && selectedTeamValue !== undefined){
+                localStorage.setItem('position', $("#team").val());
+            } else {return null}
+        localStorage.setItem('email', $('#email').val());
+        localStorage.setItem('phone', $('#phone').val());
     }
-
-    const goToLaptop = () => {
-        return <Link to='laptop'></Link>
-    }
-    
-
     
 
     return (
@@ -123,9 +158,7 @@ const Employee = () => {
                         <label htmlFor='name' className='' style={{float: "left"}}>სახელი</label>
                         <br />
                         <input id='name' key='name' className='form-control' type="text" name="name" 
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.name}
+                       { ...formik.getFieldProps('name')}
                         />
                         {formik.touched.name && formik.errors.name 
                         ? 
@@ -138,7 +171,7 @@ const Employee = () => {
                     <div className='form-group col-6'>
                         <label htmlFor='surname' className='' style={{float: "left"}}>გვარი</label>     
                         <br />
-                        <input className='form-control' type="text" name="surname" 
+                        <input id='surname' className='form-control' type="text" name="surname" 
                         { ...formik.getFieldProps('surname')}/>
                         {formik.touched.surname && formik.errors.surname 
                         ? 
@@ -151,8 +184,8 @@ const Employee = () => {
                 </div>
 
                     <div className='row justify-content-center my-5'>
-                        <div className='form-group'>
-                            <select id='teams' className='form-control' name='team'
+                        <div className='form-group teams-div'>
+                            <select id='team' className='form-control' name='team'
                             { ...formik.getFieldProps('team')}>
                                 <option name="team" value="" disabled hidden>თიმი</option>
                                 {teams && teams.map(({id, name}) => (
@@ -172,7 +205,7 @@ const Employee = () => {
 
                 <div className='row justify-content-center my-4'>
                     <div className='form-group'>
-                        <select id='positions' className='form-control' name='position' 
+                        <select id='position' className='form-control' name='position' 
                         { ...formik.getFieldProps('position')}>
                             <option name="position" value="" disabled hidden>პოზიცია</option>
                             {positions && positions.map(({id, name, team_id}) => (
@@ -195,7 +228,7 @@ const Employee = () => {
                     <div className='form-group'>
                         <label className='mx-2 my-1' htmlFor="email" style={{float: "left"}}>მეილი</label>
                         <br />
-                        <input name='email' className='form-control' refs="email" type="text" placeholder="Email" 
+                        <input id='email' name='email' className='form-control' refs="email" type="text" placeholder="Email" 
                         { ...formik.getFieldProps('email')}
                         />
                                 {formik.touched.email && formik.errors.email 
@@ -211,7 +244,7 @@ const Employee = () => {
                     <div className='form-group'>
                         <label className="mx-2 my-1" htmlFor="phone" style={{float: "left"}}>ტელეფონის ნომერი</label>
                         <br />
-                        <input name="phone" className='form-control' refs="phone" type="text" placeholder="Phone" 
+                        <input id='phone' name="phone" className='form-control' refs="phone" type="text" placeholder="Phone" 
                         { ...formik.getFieldProps('phone')}
                         />
                             {formik.touched.phone && formik.errors.phone 
