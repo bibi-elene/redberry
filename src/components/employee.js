@@ -6,6 +6,9 @@ import {Link} from 'react-router-dom';
 import { useFormik } from 'formik';
 import { validate } from 'graphql';
 import Form from './form'
+import $ from 'jquery';
+import { findAllInRenderedTree } from 'react-dom/test-utils';
+import Laptop from './laptop';
 
 
 const Employee = () => {
@@ -56,7 +59,7 @@ const Employee = () => {
 
     const formik = useFormik({
         initialValues: {
-            name: '',
+            name: localStorage.getItem('name') == 'undefined' ? '' : localStorage.getItem('name'),
             surname: '',
             team: '',
             position: '',
@@ -100,25 +103,28 @@ const Employee = () => {
             return errors;
 
         }
-
-
     })
 
- // Current value of selected Team
+ // Current ID of selected Team
  // For filtering the positions options
+    if (teams){
+        if (teams == undefined) {return 'error fetching data'}
 
-    if (teams) {
         var select = document.getElementById('teams');
-        var selectedValue = select.options[select.selectedIndex].value;
+        var selectedTeamId = select.options[select.selectedIndex].id
     }
 
+// Save current data to local storage
+// To not lose upon refresh
+    window.onbeforeunload = function() {
+        localStorage.setItem('name', $('#name').val());
+    }
     
 
     
 
     return (
         <>
-        <Form />
         <div className='row mt-4 justify-content-center' style={{fontSize: "12px"}}>
             <form onSubmit={formik.handleSubmit} style={{maxWidth: 600}}>
                 <div className='row'>
@@ -126,8 +132,11 @@ const Employee = () => {
                     <div className='form-group col-6'>
                         <label htmlFor='name' className='' style={{float: "left"}}>სახელი</label>
                         <br />
-                        <input className='form-control' type="text" name="name" 
-                        { ...formik.getFieldProps('name')}/>
+                        <input id='name' key='name' className='form-control' type="text" name="name" 
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.name}
+                        />
                         {formik.touched.name && formik.errors.name 
                         ? 
                         <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.name}</small>                        
@@ -154,11 +163,10 @@ const Employee = () => {
                     <div className='row justify-content-center my-5'>
                         <div className='form-group'>
                             <select id='teams' className='form-control' name='team'
-                            
                             { ...formik.getFieldProps('team')}>
                                 <option name="team" value="" disabled hidden>თიმი</option>
                                 {teams && teams.map(({id, name}) => (
-                                 <option name="team" value={id} key={id}>{name}</option>
+                                 <option name={id} id={id} key={id}>{name}</option>
                             )
                             )
                                     }   
@@ -178,12 +186,11 @@ const Employee = () => {
                         { ...formik.getFieldProps('position')}>
                             <option name="position" value="" disabled hidden>პოზიცია</option>
                             {positions && positions.map(({id, name, team_id}) => (
-                            team_id == selectedValue ?
+                            team_id == selectedTeamId
+                            ?
                             <option key={id}>{name}</option>
                             : null
-                            )
-                            )
-                            }
+                            ))}
                         </select>
                                 {formik.touched.position && formik.errors.position 
                                 ?
@@ -215,7 +222,7 @@ const Employee = () => {
                         <label className="mx-2 my-1" htmlFor="phone" style={{float: "left"}}>ტელეფონის ნომერი</label>
                         <br />
                         <input name="phone" className='form-control' refs="phone" type="text" placeholder="Phone" 
-                        { ...formik.getFieldProps('phonefjfjsfsfsa')}
+                        { ...formik.getFieldProps('phone')}
                         />
                             {formik.touched.phone && formik.errors.phone 
                             ?
