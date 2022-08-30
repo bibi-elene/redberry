@@ -4,7 +4,7 @@ import Laptop from './laptop';
 import Success from './success';
 
 
-const Form = () => {
+const FileForm = () => {
     const [page, setPage] = useState(0);
 
     const PageTitles = ["Employee", "Laptop", "Success"]
@@ -20,15 +20,12 @@ const Form = () => {
     };
 
     return (
-    <div className='form'> 
-        <div className='row my-5'>
+        
+        <div className='row my-5 form'>
             <h2 className='col-6 text-end'> თანამშრომლის ინფო</h2>
             <h2 className='col-6 text-start'> ლეპტოპის მახასიათებლები</h2>
         </div>
-
-        
-    </div>       
     )
 }
 
-export default Form;
+export default FileForm;

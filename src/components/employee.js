@@ -57,53 +57,38 @@ const Employee = () => {
         fetchPositions();
     }, []);
 
-    const formik = useFormik({
-        initialValues: {
+        const initialValues = {
             name: localStorage.getItem('name') == 'undefined' ? '' : localStorage.getItem('name'),
             surname: '',
             team: '',
             position: '',
             email: '',
             phone: ''
-
-        }, 
-
-        onSubmit: values => {
-            console.log('Form data', values);
-        },
-
-        validate: values => {
-
-            let errors = {};
-
-            if(!values.name) {
-                errors.name = "Required"
-            }
-
-            if(!values.surname) {
-                errors.surname = "Required"
-            }
-
-            if(!values.team) {
-                errors.team = "Required"
-            }
-
-            if(!values.position) {
-                errors.position = "Required"
-            }
-
-            if(!values.email) {
-                errors.email = "Required"
-            }
-
-            if(!values.phone) {
-                errors.phone = "Required"
-            }
-
-            return errors;
-
         }
-    })
+
+        const onSubmit = (values) => {
+            console.log('Form data', values);
+            navigate('/laptop')
+        }
+
+        const validate = (values) => {
+            let errors = {};
+            if(!values.name) {errors.name = "Required"}
+            if(!values.surname) {errors.surname = "Required"}
+            if(!values.team) {errors.team = "Required"}
+            if(!values.position) {errors.position = "Required"}
+            if(!values.email) {errors.email = "Required"}
+            if(!values.phone) {errors.phone = "Required"}
+            return errors;
+        }
+
+        const formik = useFormik({
+            initialValues, 
+            onSubmit, 
+            validate
+        })
+    
+   
 
  // Current ID of selected Team
  // For filtering the positions options
@@ -119,12 +104,17 @@ const Employee = () => {
     window.onbeforeunload = function() {
         localStorage.setItem('name', $('#name').val());
     }
+
+    const goToLaptop = () => {
+        return <Link to='laptop'></Link>
+    }
     
 
     
 
     return (
         <>
+        <Form />
         <div className='row mt-4 justify-content-center' style={{fontSize: "12px"}}>
             <form onSubmit={formik.handleSubmit} style={{maxWidth: 600}}>
                 <div className='row'>
@@ -233,7 +223,8 @@ const Employee = () => {
                     </div>
                 </div>
             <button type='submit'
-            className='btn btn-info m-5 px-5 py-2'>
+            className='btn btn-info m-5 px-5 py-2'
+            >
             Next 
             </button>
 

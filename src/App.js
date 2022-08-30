@@ -1,9 +1,9 @@
 import './App.css';
 import Homepage from './components/homepage';
 import Form from './components/form';
-import Employee from './components/employee';
 import Laptop from './components/laptop';
 import Success from './components/success';
+import Employee from './components/employee';
 
 import logo from './logo.png';
 import {

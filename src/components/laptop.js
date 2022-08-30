@@ -45,6 +45,7 @@ const Laptop = () => {
 
     return (
         <>
+        <Form />
         <div className='row mt-2 justify-content-center' style={{fontSize: "12px"}}>
             <div className='row file-form m-4 justify-content-center' style={{width: "auto", maxWidth: 600, maxHeight: 280}}>
             <label htmlFor="files col"><i className="bi bi-exclamation-triangle"></i></label> <br />         
