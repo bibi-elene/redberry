@@ -20,6 +20,7 @@ function App() {
     <Router>
       <Routes>
       <Route path='/' element={<Homepage />} />
+      <Route path='/form' element={<Form />} />
       <Route path='/employee' element={<Employee />} />
       <Route path='/laptop' element={<Laptop />} />
       <Route path='/success' element={<Success />} />

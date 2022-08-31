@@ -9,10 +9,13 @@ import Form from './form'
 import $ from 'jquery';
 import { findAllInRenderedTree } from 'react-dom/test-utils';
 import Laptop from './laptop';
+import { values } from 'lodash';
+import * as Yup from 'yup';
 
 
-const Employee = () => {
+const Employee = ({formData, setFormData, page, setPage}) => {
 
+    const FormTitles = ["Employee", "Laptop", "Success"]
     const teamUrl = 'https://pcfy.redberryinternship.ge/api/teams';
     const positionUrl = 'https://pcfy.redberryinternship.ge/api/positions';
     const [teams, setTeams] = useState(null);
@@ -20,7 +23,6 @@ const Employee = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     let navigate = useNavigate();
-
 
     let fetchTeams = () => {
         fetch(teamUrl)
@@ -73,88 +75,100 @@ const Employee = () => {
         fetchPositions();
     }, []);
 
+    const initialValues = {
+        name: localStorage.getItem('name') == 'undefined' ? '' : localStorage.getItem('name'),
+        surname: localStorage.getItem('surname') == 'undefined' ? '' : localStorage.getItem('surname'),
+        team: localStorage.getItem('team') == 'undefined' ? '' : localStorage.getItem('team'),
+        position: localStorage.getItem('position') == 'undefined' ? '' : localStorage.getItem('position'),
+        email: localStorage.getItem('email') == 'undefined' ? '' : localStorage.getItem('email'),
+        phone: localStorage.getItem('phone') == 'undefined' ? '' : localStorage.getItem('phone')
+    }
 
-        const initialValues = {
-            name: localStorage.getItem('name') == 'undefined' ? '' : localStorage.getItem('name'),
-            surname: localStorage.getItem('surname') == 'undefined' ? '' : localStorage.getItem('surname'),
-            team: localStorage.getItem('team') == 'undefined' ? '' : localStorage.getItem('team'),
-            position: localStorage.getItem('position') == 'undefined' ? '' : localStorage.getItem('position'),
-            email: localStorage.getItem('email') == 'undefined' ? '' : localStorage.getItem('email'),
-            phone: localStorage.getItem('phone') == 'undefined' ? '' : localStorage.getItem('phone')
-        }
+    const onSubmit = (values) => {
+        setFormData({
+            ...formData, 
+            name: values.name,
+            surname: values.surname,
+            team: values.team,
+            position: values.position,
+            email: values.email,
+            phone: values.phone});
+        
 
-        const onSubmit = (values) => {
-            console.log('Form data', values);
-            navigate('/laptop')
-        }
+            if (page === FormTitles.length) {
+              alert("FORM SUBMITTED", formData);
+            } else {
+              setPage((currPage) => currPage + 1);
+            }
+          
+    }
 
-        const validate = (values) => {
-            let errors = {};
-            if(!values.name) {errors.name = "Required"}
-            if(!values.surname) {errors.surname = "Required"}
-            if(!values.team) {errors.team = "Required"}
-            if(!values.position) {errors.position = "Required"}
-            if(!values.email) {errors.email = "Required"}
-            if(!values.phone) {errors.phone = "Required"}
-            return errors;
-        }
+    const validate = (values) => {
+        let errors = {};
+        if(!values.name) {errors.name = "Required"}
+        if(values.name.length < 2) {errors.name = "2 სიმბოლო მინიმუმ"}
+        else if(!(/^[ა-ჰ]+$/).test(values.name)) {errors.name = "გამოიყენე ქართული ასოები"}
+        if(!values.surname) {errors.surname = "Required"}
+        else if(!(/^[ა-ჰ]+$/).test(values.surname)) {errors.surname = "გამოიყენე ქართული"}
+        if(values.surname.length < 2) {errors.surname = "2 სიმბოლო მინიმუმ"}
+        if(!values.team) {errors.team = "Required"}
+        if(!values.position) {errors.position = "Required"}
+        if(!values.email) {errors.email = "Required"}
+        else if(!values.email.endsWith("@redberry.ge")) {errors.email = "invalid format"}
+        if(!values.phone) {errors.phone = "Required"}
+        else if(!values.phone.startsWith('+995')) {errors.phone = "False format"}
+        else if(values.phone.length !== 13) {errors.phone = "False format"}
+        return errors;
+    }
 
-        const formik = useFormik({
-            initialValues, 
-            onSubmit, 
-            validate
-        })
+    const formik = useFormik({
+        initialValues, 
+        onSubmit, 
+        validate
+    })
 
-        if (loading) return "Loading ..."
-        if (error) return "Error: "
+    if (loading) return "Loading ..."
+    if (error) return "Error: "
+       
     
-    
-   
-
  // Current ID of selected Team
  // For filtering the positions options
-    if (teams){
-        if (teams == undefined) {return 'error fetching data'}
-        var selectTeam = document.getElementById('team');
-        var selectPosition = document.getElementById('position');
-
-        if (selectTeam.options[selectTeam.selectedIndex]) {
-        var selectedTeamId = selectTeam.options[selectTeam.selectedIndex].id;
-        var selectedTeamValue = selectTeam.options[selectTeam.selectedIndex].value;
-        }
+        if (teams){
+            if (teams == undefined) {return 'error fetching data'}
+            var selectTeam = document.getElementById('team');
+            var selectPosition = document.getElementById('position');
+    
+            if (selectTeam.options[selectTeam.selectedIndex]) {
+            var selectedTeamId = selectTeam.options[selectTeam.selectedIndex].id;
+            var selectedTeamValue = selectTeam.options[selectTeam.selectedIndex].value;
+            }
+            
+            if (selectPosition.options[selectPosition.selectedIndex]) {
+            var selectedPositionId = selectPosition.options[selectPosition.selectedIndex].id;
+            var selectedPositionValue = selectPosition.options[selectPosition.selectedIndex].value;
+            }     
+        }   
         
-        if (selectPosition.options[selectPosition.selectedIndex]) {
-        var selectedPositionId = selectPosition.options[selectPosition.selectedIndex].id;
-        var selectedPositionValue = selectPosition.options[selectPosition.selectedIndex].value;
-        }
-        
-    }        
-        
-
-// Save current data to local storage
-// To not lose upon refresh
     window.onbeforeunload = function() {
         localStorage.setItem('name', $('#name').val());
         localStorage.setItem('surname', $('#surname').val());
             if (selectedTeamValue && selectedTeamValue !== undefined){
                 localStorage.setItem('team', $("#team").val());
-            } else {return null}
-            if (selectedTeamValue && selectedTeamValue !== undefined){
+            } else {return ''}
+            if (selectedPositionId && selectedPositionValue !== undefined){
                 localStorage.setItem('position', $("#team").val());
-            } else {return null}
+            } else {return ''}
         localStorage.setItem('email', $('#email').val());
         localStorage.setItem('phone', $('#phone').val());
     }
-    
 
     return (
         <>
-        <Form />
         <div className='row mt-4 justify-content-center' style={{fontSize: "12px"}}>
             <form onSubmit={formik.handleSubmit} style={{maxWidth: 600}}>
                 <div className='row'>
 
-                    <div className='form-group col-6'>
+                <div className='form-group col-6'>
                         <label htmlFor='name' className='' style={{float: "left"}}>სახელი</label>
                         <br />
                         <input id='name' key='name' className='form-control' type="text" name="name" 
@@ -187,12 +201,10 @@ const Employee = () => {
                         <div className='form-group teams-div'>
                             <select id='team' className='form-control' name='team'
                             { ...formik.getFieldProps('team')}>
-                                <option name="team" value="" disabled hidden>თიმი</option>
+                                <option name="team" defaultValue="" disabled hidden>თიმი</option>
                                 {teams && teams.map(({id, name}) => (
                                  <option name={id} id={id} key={id}>{name}</option>
-                            )
-                            )
-                                    }   
+                            ))}   
 
                             </select>
                                 {formik.touched.team && formik.errors.team 
@@ -255,11 +267,25 @@ const Employee = () => {
                             } 
                     </div>
                 </div>
-            <button type='submit'
-            className='btn btn-info m-5 px-5 py-2'
-            >
-            Next 
-            </button>
+
+    <div className="footer">
+
+<button
+    className='btn btn-info m-5 px-5 py-2'
+    disabled={page == 0}
+    onClick={() => {
+      setPage((currPage) => currPage - 1);
+    }}>
+        ეკან
+    </button>
+<button
+    id="submit"
+    type='submit'
+    className={page !== FormTitles.length - 1 ? 'btn btn-info m-5 px-5 py-2' : 'd-none'}
+    >
+    {page === FormTitles.length ? "დამახსოვრება" : "შემდეგი"}
+    </button>
+  </div>
 
             </form>
           

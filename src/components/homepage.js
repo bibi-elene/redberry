@@ -19,7 +19,7 @@ const Homepage = () => {
             <img className='p-5 justify-content-center text-center' src={layer} alt='hero' width="100%" style={{maxWidth: "800px"}}></img>
             </div>
             <div className="justify-content-center ">
-            <Link to="/employee">
+            <Link to="/form">
             <button className='btn btn-info my-3 px-5 py-3'
              id="btn-add" style={{width: "300px"}} 
             

@@ -4,13 +4,16 @@ import Form from './form'
 import {Link} from "react-router-dom";
 import { useFormik } from 'formik';
 import { validate } from 'graphql';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 
 
 
-const Laptop = () => {
 
+const Laptop = ({formData, setFormData, page, setPage}) => {
+
+    const FormTitles = ["Employee", "Laptop", "Success"]
     const brandUrl = 'https://pcfy.redberryinternship.ge/api/brands';
     const cpuUrl = 'https://pcfy.redberryinternship.ge/api/cpus'
     let [brand, setBrand] = useState(null);
@@ -18,6 +21,7 @@ const Laptop = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    let values = useParams();
 
     const fetchBrands = () => {
         fetch(brandUrl)
@@ -65,167 +69,129 @@ const Laptop = () => {
         fetchCpu();
     }, []);
 
-    const initialValues = {
-        file: localStorage.getItem('file') == 'undefined' ? '' : localStorage.getItem('file'),
-        pcname: localStorage.getItem('pcname') == 'undefined' ? '' : localStorage.getItem('pcname'),
-        pcbrand: localStorage.getItem('pcbrand') == 'undefined' ? '' : localStorage.getItem('pcbrand'),
-        cpu: localStorage.getItem('cpu') == 'undefined' ? '' : localStorage.getItem('cpu'),
-        cpuprop1: localStorage.getItem('cpuprop1') == 'undefined' ? '' : localStorage.getItem('cpuprop1'),
-        cpuprop2: localStorage.getItem('cpuprop2') == 'undefined' ? '' : localStorage.getItem('cpuprop2'),
-        ram: localStorage.getItem('ram') == 'undefined' ? '' : localStorage.getItem('ram'),
-        //memoryType: localStorage.getItem('memoryType') == 'undefined' ? '' : localStorage.getItem('memoryType'),
-        date: localStorage.getItem('date') == 'undefined' ? '' : localStorage.getItem('date'),
-        price: localStorage.getItem('price') == 'undefined' ? '' : localStorage.getItem('price'),
-        //condition: localStorage.getItem('condition') == 'undefined' ? '' : localStorage.getItem('condition')
-    }
-
-    const onSubmit = (values) => {
-        console.log('Form data', values);
-        navigate('/success')
-    }
-
-    const validate = (values) => {
-        let errors = {};
-        if(!values.file) {errors.file = "Required"}
-        if(!values.pcname) {errors.pcname = "Required"}
-        if(!values.pcbrand) {errors.pcbrand = "Required"}
-        if(!values.cpu) {errors.cpu = "Required"}
-        if(!values.cpuprop1) {errors.cpuprop1 = "Required"}
-        if(!values.cpuprop2) {errors.cpuprop2 = "Required"}
-        if(!values.ram) {errors.ram = "Required"}
-        //if(!values.memoryType) {errors.memoryType = "Required"}
-        if(!values.date) {errors.date = "Required"}
-        if(!values.price) {errors.price = "Required"}
-        //if(!values.condition) {errors.condition = "Required"}
-
-
-        return errors;
-    }
-
-    const formik = useFormik({
-        initialValues, 
-        onSubmit, 
-        validate
-    })
-
+    var memoryRadios = document.getElementsByName("memoryVal");
+    var conditionRadios =  document.getElementsByName("conditionVal");
+    var memoryVal = localStorage.getItem('memoryVal');
+    var conditionVal = localStorage.getItem('conditionVal');
 
 
     if (loading) return "Loading ..."
     if (error) return "Error: "
 
+    console.log("Form Data", formData)
+
     return (
         <>
-        <Form />
        
     <div className='row mt-2 justify-content-center' style={{fontSize: "12px"}}>
 
     <div className='row justify-content-center '>
-        <form onSubmit={formik.handleSubmit} className='m-5' style={{maxWidth: 600}}>
-
-           
-
+        <form className='m-4' style={{maxWidth: 600}}>
+        <div className='row file-form mb-5' style={{minHeight: 200, maxWidth: "600px"}}>
+            <label htmlFor="file" style={{fontSize: "15px", fontWeight: "900", color: "rgb(107, 168, 214)"}}>ჩააგდე ან ატვირთე <br /> ლეპტოპის ფოტო <br/> 
+            <a className='btn btn-info m-5' style={{color: "white"}}>ატვირთე</a>
+            </label>
+            <input type="file"
+            id="file" name="file"
+            accept="image/png, image/jpeg" 
+            value={formData.file}
+            onChange={(event) =>
+            setFormData({ ...formData, file: event.target.value })
+            }/>
+                </div>
             <div className='row'>
                 <div className='form-group col-6'>
-                <label className='text-start' style={{float: "left"}}>ლეპტოპის სახელი</label>
+                <label htmlFor='pcname' className='text-start' style={{float: "left"}}>ლეპტოპის სახელი</label>
                 <input name="pcname" id='pcName' className='form-control' type="text"
-                 { ...formik.getFieldProps('pcname')}
+                   value={formData.pcname}
+                   onChange={(event) =>
+                   setFormData({ ...formData, pcname: event.target.value })
+                   }
                  />
-                 {formik.touched.pcname && formik.errors.pcname 
-                 ? 
-                 <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.pcname}</small>                        
-                 :
-                 <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                 }  
+               
                 </div>
 
                 <div className='form-group col-6' style={{marginTop: "18px"}}>
-                <select defaultValue="" name='pcbrand' className='form-control' required
-                { ...formik.getFieldProps('pcbrand')}
+                <select name='pcbrand' className='form-control' required
                 >
                         
                     <option value="" disabled hidden>ლეპტოპის ბრენდი</option>
                         {brand && brand.map(({id, name, team_id}) => (
-                            <option key={id}>{name}</option>
+                            <option key={id}
+                            value={formData.pcbrand}
+                            onChange={(event) =>
+                            setFormData({ ...formData, pcbrand: event.target.value })
+                            }>{name}</option>
                         ))}
                 </select>
-                        {formik.touched.pcbrand && formik.errors.pcbrand 
-                        ? 
-                        <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.pcbrand}</small>                        
-                        :
-                        <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                        }  
+                 
                 </div>
             </div>
 
             <div className='row my-4'>
                 <div className='form-group col-4' style={{marginTop: "34px"}}>
-                <select name='cpu' defaultValue="" className='form-control' required
-                    { ...formik.getFieldProps('cpu')}
+                <select name='cpu' className='form-control' required
                     >
                     <option value="" disabled hidden>CPU</option>
                         {cpu && cpu.map(({id, name}) => (
-                            <option key={id}>{name}</option>
+                            <option key={id}
+                            value={formData.cpu}
+                            onChange={(event) =>
+                            setFormData({ ...formData, cpu: event.target.value })
+                            }>{name}</option>
                         ))}
                 </select>
-                        {formik.touched.cpu && formik.errors.cpu 
-                        ? 
-                        <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.cpu}</small>                        
-                        :
-                        <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                        }  
+                 
                 </div>
 
                 <div className='form-group col-4 '>
-                <label className='pb-3' style={{float: "left"}}>CPU-ს ბირთვი</label>
-                <input className='form-control' type="number" id='cpuprop1' name="cpuprop1" 
-                { ...formik.getFieldProps('cpuprop1')}
+                <label htmlFor='cpuprop1' className='pb-3' style={{float: "left"}}>CPU-ს ბირთვი</label>
+                <input 
+                className='form-control' 
+                type="number" 
+                id='cpuprop1' 
+                name="cpuprop1" 
+                   value={formData.cpuprop1}
+                   onChange={(event) =>
+                   setFormData({ ...formData, cpuprop1: event.target.value })
+                   }
                 />
-                {formik.touched.cpuprop1 && formik.errors.cpuprop1 
-                ? 
-                <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.cpuprop1}</small>                        
-                :
-                <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                }  
                 </div>
 
                 <div className='form-group col-4 '>
-                <label className='pb-3' style={{float: "left"}}>CPU-ს ნაკადი</label>
-                <input className='form-control' type="number" name="cpuprop2" 
-                { ...formik.getFieldProps('cpuprop2')}
+                <label htmlFor='cpuprop2' className='pb-3' style={{float: "left"}}>CPU-ს ნაკადი</label>
+                <input className='form-control' type="number" name="cpuprop2"
+                value={formData.cpuprop2}
+                onChange={(event) =>
+                setFormData({ ...formData, cpuprop2: event.target.value })
+                }
                 />
-                {formik.touched.cpuprop2 && formik.errors.cpuprop2
-                ? 
-                <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.cpuprop2}</small>                        
-                :
-                <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                }  
+               
                 </div>
 
             </div>
 
             <div className='row'>
             <div className='form-group col-6 my-3'>
-                <label className='pb-3' style={{float: "left"}}>ლეპტოპის RAM (GB)</label>
+                <label htmlFor='ram' className='pb-3' style={{float: "left"}}>ლეპტოპის RAM (GB)</label>
                 <input className='form-control' type="number" name="ram" 
-                { ...formik.getFieldProps('ram')}
+                value={formData.ram}
+                onChange={(event) =>
+                setFormData({ ...formData, ram: event.target.value })
+                }
                 />
-                {formik.touched.ram && formik.errors.ram 
-                ? 
-                <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.ram}</small>                        
-                :
-                <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                }  
+                
                 </div>
             
             <div className='form-group col-6 my-3 text-start'>
-                <label className='pb-4'>მეხსიერების ტიპი</label>
+                <label htmlFor='memoryVal' className='pb-4'>მეხსიერების ტიპი</label>
                 <br />
                 <div className="form-check form-check-inline">
-                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
+                <input className="form-check-input" type="radio" name="memoryVal" id="memoryVal1" value="memoryVal1" required/>
                 <label className="form-check-label" htmlFor="inlineRadio1">SSD</label>
                 </div>
                 <div className="form-check form-check-inline">
-                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
+                <input className="form-check-input" type="radio" name="memoryVal" id="memoryVal2" value="memoryVal2" />
                 <label className="form-check-label" htmlFor="inlineRadio2">HDD</label>
                 </div>
             </div>
@@ -234,62 +200,68 @@ const Laptop = () => {
 
             <div className='row'>
                 <div className='form-group col-6 my-3'>
-                <label htmlFor="purchase" style={{float: "left"}}>შეძენის რიცხვი (არჩევითი)</label>
+                <label htmlFor="date" style={{float: "left"}}>შეძენის რიცხვი (არჩევითი)</label>
                 <br />
                 <input name='date' className='form-control mt-3' type="date"
-                { ...formik.getFieldProps('date')}
+                value={formData.date}
+                onChange={(event) =>
+                setFormData({ ...formData, date: event.target.value })
+                }
                 />
-                {formik.touched.date && formik.errors.date 
-                ? 
-                <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.date}</small>                        
-                :
-                <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                }  
                 </div>
 
                 <div className='form-group col-6 my-3'>
-                <label className='pb-3' style={{float: "left"}}>ლეპტოპის ფასი</label>
+                <label htmlFor='price' className='pb-3' style={{float: "left"}}>ლეპტოპის ფასი</label>
                 <br />
                 <input className='form-control' type="number" name="price" 
-                { ...formik.getFieldProps('price')}
+                value={formData.price}
+                onChange={(event) =>
+                setFormData({ ...formData, price: event.target.value })
+                }
                 />
-                {formik.touched.price && formik.errors.price 
-                ? 
-                <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.price}</small>                        
-                :
-                <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                }  
                 
                 </div>
             </div>
 
         <div className="row justify-content-start text-start">
             <div className='form-group col-6 my-3'>
-                <label className='pb-4'>ლეპტოპის მდგომარეობა</label>
+                <label htmlFor='conditionVal' className='pb-4'>ლეპტოპის მდგომარეობა</label>
                 <br />
                 <div className="form-check form-check-inline">
-                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
+                <input className="form-check-input" type="radio" name="conditionVal" id="conditionVal1" value="conditionVal1" required/>
                 <label className="form-check-label" htmlFor="inlineRadio1">ახალი</label>
                 </div>
                 <div className="form-check form-check-inline">
-                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
+                <input className="form-check-input" type="radio" name="conditionVal" id="conditionVal2" value="conditionVal2" />
                 <label className="form-check-label" htmlFor="inlineRadio2">მეორადი</label>
                 </div>
             </div>
         </div>
+        
+        <div className="footer">
 
-        <div className="row my-4"> 
-            <Link to="/employee" className='col-6 text-start'>
-                <p className='back'>უკან</p>
-            </Link>
-
-            <button 
-            type='submit'
-            className='btn btn-info px-5 py-2'>
-             დამახსოვრება
-            </button>
-        </div>
-
+<button
+    className='btn btn-info m-5 px-5 py-2'
+    disabled={page == 0}
+    onClick={() => {
+      setPage((currPage) => currPage - 1);
+    }}>
+        ეკან
+    </button>
+<button
+    type='submit'
+    className={page !== FormTitles.length - 1 ? 'btn btn-info m-5 px-5 py-2' : 'd-none'}
+    onClick={() => {
+      if (page === FormTitles.length) {
+        alert("FORM SUBMITTED", formData);
+        console.log(formData);
+      } else {
+        setPage((currPage) => currPage + 1);
+      }
+    }}>
+    {page === FormTitles.length ? "დამახსოვრება" : "შემდეგი"}
+    </button>
+  </div>
                 </form>
             </div>
 
