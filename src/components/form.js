@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import Employee from './employee';
 import Laptop from './laptop';
 import Success from './success';
+import logo from '../LOGO-10 1.png'
+
 
 
 const FileForm = () => {
@@ -39,16 +41,43 @@ const FileForm = () => {
         }
     };
 
+
+
     return (
     <>   
-        <div className='row my-5 form'>
-            <h2 className='col-6 text-end'> თანამშრომლის ინფო</h2>
-            <h2 className='col-6 text-start'> ლეპტოპის მახასიათებლები</h2>
+        <div className='row mt-5 form text-center'>
+        {page == 0 ?
+    <div className='row' >  
+         <div className="row col-6 text-end justify-content-center">
+            <h2> თანამშრომლის ინფორმაცია </h2>
+            <div>
+            <hr style={{width: "140px", color: "black", float: "right", marginRight: "20px", height: "2px"}}/>
+            </div>
+        </div>
+        <div className='row col-6 text-start'>
+            <h2 className=''> ლეპტოპის მახასიათებლები</h2> 
+            </div>
+            </div>  
+            :
+            <div className='row' >  
+            <div className="row col-6 text-end justify-content-center">
+               <h2> თანამშრომლის ინფორმაცია </h2>
+               <div>
+               </div>
+           </div>
+           <div className='row ml-2 col-6 text-start'>
+               <h2 className=''> ლეპტოპის მახასიათებლები</h2> 
+               <hr style={{width: "140px", color: "black", float: "right", marginLeft: "33px", height: "2px", marginTop: "14px"}}/>
+               </div>
+               </div>  
+        }
         </div>
 
         <div className="body">{PageDisplay()}</div>
 
-    
+        <div className='footer'><div>
+          <img className='p-5' width="160px" src={logo} alt="logo"></img>
+          </div></div>
     </>    
     )
 }

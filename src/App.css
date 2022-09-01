@@ -8,6 +8,18 @@
 
 body {
   font-family: HelveticaNeue !important;
+  background-color: #EBEBEB;
+}
+
+button {
+  font-weight: 700 !important;
+  font-size: "20px" !important
+}
+
+form {
+  background-color: white;
+  border-radius: 8px;
+  padding: 40px;
 }
 
 .App {
@@ -41,7 +53,15 @@ body {
 }
 
 h2 {
-  font-size: 18px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+hr { 
+    background-color: black !important;
+    border: 0 none !important;
+    color: black !important;
+    height: 3px !important;
 }
 
 i {
@@ -56,8 +76,13 @@ input[type="file"] {
   display: none;
 }
 
+input {
+  border-color: #4D9AC3 !important
+}
+
 .file-form {
-  border: 2px dashed rgb(107, 168, 214);
+  border: 2px dashed #4386A9;
+  border-radius: 8px;
   padding: 8vw;
 }
 

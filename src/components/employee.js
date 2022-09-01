@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import { isNonNullObject } from '@apollo/client/utilities';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
 import {Link} from 'react-router-dom';
@@ -11,11 +10,12 @@ import { findAllInRenderedTree } from 'react-dom/test-utils';
 import Laptop from './laptop';
 import { values } from 'lodash';
 import * as Yup from 'yup';
+import logo from '../LOGO-10 1.png'
 
 
 const Employee = ({formData, setFormData, page, setPage}) => {
 
-    const FormTitles = ["Employee", "Laptop", "Success"]
+    const FormTitles = ["Employee", "Laptop", "Success"];
     const teamUrl = 'https://pcfy.redberryinternship.ge/api/teams';
     const positionUrl = 'https://pcfy.redberryinternship.ge/api/positions';
     const [teams, setTeams] = useState(null);
@@ -75,14 +75,28 @@ const Employee = ({formData, setFormData, page, setPage}) => {
         fetchPositions();
     }, []);
 
+
+    // Store items locally to avoid  
+    // Losing data on Refresh
+    window.onbeforeunload = function() {
+        localStorage.setItem('name', $('#name').val());
+        localStorage.setItem('surname', $('#surname').val());
+        localStorage.setItem('team', $("#team").val());
+        localStorage.setItem('position', $("#position").val());
+        localStorage.setItem('email', $('#email').val());
+        localStorage.setItem('phone', $('#phone').val());
+    }
+
     const initialValues = {
         name: localStorage.getItem('name') == 'undefined' ? '' : localStorage.getItem('name'),
         surname: localStorage.getItem('surname') == 'undefined' ? '' : localStorage.getItem('surname'),
-        team: localStorage.getItem('team') == 'undefined' ? '' : localStorage.getItem('team'),
-        position: localStorage.getItem('position') == 'undefined' ? '' : localStorage.getItem('position'),
+        team: localStorage.getItem('team') == 'null' ? '' : localStorage.getItem('team'),
+        position: localStorage.getItem('position') == 'null' ? '' : localStorage.getItem('position'),
         email: localStorage.getItem('email') == 'undefined' ? '' : localStorage.getItem('email'),
         phone: localStorage.getItem('phone') == 'undefined' ? '' : localStorage.getItem('phone')
     }
+
+    console.log(localStorage.getItem('position'))
 
     const onSubmit = (values) => {
         setFormData({
@@ -93,6 +107,14 @@ const Employee = ({formData, setFormData, page, setPage}) => {
             position: values.position,
             email: values.email,
             phone: values.phone});
+
+            localStorage.setItem('name', $('#name').val());
+            localStorage.setItem('surname', $('#surname').val());
+            localStorage.setItem('team', $("#team").val());
+            localStorage.setItem('position', $("#position").val());
+            localStorage.setItem('email', $('#email').val());
+            localStorage.setItem('phone', $('#phone').val());
+            
         
 
             if (page === FormTitles.length) {
@@ -129,7 +151,6 @@ const Employee = ({formData, setFormData, page, setPage}) => {
 
     if (loading) return "Loading ..."
     if (error) return "Error: "
-       
     
  // Current ID of selected Team
  // For filtering the positions options
@@ -149,23 +170,14 @@ const Employee = ({formData, setFormData, page, setPage}) => {
             }     
         }   
         
-    window.onbeforeunload = function() {
-        localStorage.setItem('name', $('#name').val());
-        localStorage.setItem('surname', $('#surname').val());
-            if (selectedTeamValue && selectedTeamValue !== undefined){
-                localStorage.setItem('team', $("#team").val());
-            } else {return ''}
-            if (selectedPositionId && selectedPositionValue !== undefined){
-                localStorage.setItem('position', $("#team").val());
-            } else {return ''}
-        localStorage.setItem('email', $('#email').val());
-        localStorage.setItem('phone', $('#phone').val());
-    }
+    
 
     return (
         <>
-        <div className='row mt-4 justify-content-center' style={{fontSize: "12px"}}>
-            <form onSubmit={formik.handleSubmit} style={{maxWidth: 600}}>
+        <Link to="/" className='position-absolute' style={{top:15, left: 20}}><i class="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
+        <div className='row  text-center justify-content-center' style={{fontSize: "12px"}}>
+            <form onSubmit={formik.handleSubmit} style={{maxWidth: 900, minHeight: "100%"}}>
+                <div style={{padding: "50px 70px 10px 70px"}}>
                 <div className='row'>
 
                 <div className='form-group col-6'>
@@ -199,9 +211,10 @@ const Employee = ({formData, setFormData, page, setPage}) => {
 
                     <div className='row justify-content-center my-5'>
                         <div className='form-group teams-div'>
-                            <select id='team' className='form-control' name='team'
+                            <select id='team' className='form-control' name='team' 
+                            style={{backgroundColor: "#EBEBEB", borderRadius: "8px", padding: "8px 24px", fontWeight: "700"}}
                             { ...formik.getFieldProps('team')}>
-                                <option name="team" defaultValue="" disabled hidden>თიმი</option>
+                                <option value="" disabled hidden>თიმი</option>
                                 {teams && teams.map(({id, name}) => (
                                  <option name={id} id={id} key={id}>{name}</option>
                             ))}   
@@ -218,12 +231,13 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                 <div className='row justify-content-center my-4'>
                     <div className='form-group'>
                         <select id='position' className='form-control' name='position' 
+                        style={{backgroundColor: "#EBEBEB", borderRadius: "8px", padding: "8px 24px", fontWeight: "700"}}
                         { ...formik.getFieldProps('position')}>
-                            <option name="position" value="" disabled hidden>პოზიცია</option>
+                            <option value="" disabled hidden>პოზიცია</option>
                             {positions && positions.map(({id, name, team_id}) => (
                             team_id == selectedTeamId
                             ?
-                            <option key={id}>{name}</option>
+                            <option key={id}>{name}</option> 
                             : null
                             ))}
                         </select>
@@ -240,7 +254,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                     <div className='form-group'>
                         <label className='mx-2 my-1' htmlFor="email" style={{float: "left"}}>მეილი</label>
                         <br />
-                        <input id='email' name='email' className='form-control' refs="email" type="text" placeholder="Email" 
+                        <input key="email" id='email' name='email' className='form-control' type="text" placeholder="Email" 
                         { ...formik.getFieldProps('email')}
                         />
                                 {formik.touched.email && formik.errors.email 
@@ -256,7 +270,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                     <div className='form-group'>
                         <label className="mx-2 my-1" htmlFor="phone" style={{float: "left"}}>ტელეფონის ნომერი</label>
                         <br />
-                        <input id='phone' name="phone" className='form-control' refs="phone" type="text" placeholder="Phone" 
+                        <input key="phone" id='phone' name="phone" className='form-control' refs="phone" type="text" placeholder="Phone" 
                         { ...formik.getFieldProps('phone')}
                         />
                             {formik.touched.phone && formik.errors.phone 
@@ -268,28 +282,23 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                     </div>
                 </div>
 
-    <div className="footer">
+    <div className="footer text-end justify-content-end">
 
-<button
-    className='btn btn-info m-5 px-5 py-2'
-    disabled={page == 0}
-    onClick={() => {
-      setPage((currPage) => currPage - 1);
-    }}>
-        ეკან
-    </button>
 <button
     id="submit"
     type='submit'
-    className={page !== FormTitles.length - 1 ? 'btn btn-info m-5 px-5 py-2' : 'd-none'}
+    className={page !== FormTitles.length - 1 ? 'btn btn-info mt-5' : 'd-none'}
+    style={{borderRadius: "8px", color: "white", backgroundColor: "#62A1EB", padding: "18px 45px"}}
     >
     {page === FormTitles.length ? "დამახსოვრება" : "შემდეგი"}
     </button>
   </div>
 
+  </div>
+
             </form>
           
-        </div>
+            </div>
         </>
     )
 }
