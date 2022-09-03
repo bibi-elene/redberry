@@ -8,25 +8,29 @@ import logo from '../LOGO-10 1.png'
 
 const FileForm = () => {
     const [page, setPage] = useState(0);
+    let [checked, setChecked] = useState(0);
+    let [checked2, setChecked2] = useState(0);
+
 
     const [formData, setFormData] = useState({
         name: "",
         surname: "",
-        team: "",
-        position: "",
+        team_id: "",
+        position_id: "",
         email: "",
-        phone: "",
-        file: "",
-        pcname: "",
-        pcbrand: "",
-        cpu: "",
-        cpuprop1: "",
-        cpuprop2: "",
-        ram: "",
-        memoryType: "",
-        date: "",
-        price: "",
-        condition: ""
+        phone_number: "",
+        laptop_image: "",
+        laptop_name: "",
+        laptop_brand_id: "",
+        laptop_cpu: "",
+        laptop_cpu_cores: "",
+        laptop_cpu_threads: "",
+        laptop_ram: "",
+        laptop_hard_drive_type: "",
+        laptop_purchase_date: "",
+        laptop_price: "",
+        laptop_state: "",
+        token: ""
     })
 
     const FormTitles = ["Employee", "Laptop", "Success"]

@@ -78,53 +78,47 @@ const Employee = ({formData, setFormData, page, setPage}) => {
 
     // Store items locally to avoid  
     // Losing data on Refresh
-    window.onbeforeunload = function() {
+    const saveData = () => {
         localStorage.setItem('name', $('#name').val());
         localStorage.setItem('surname', $('#surname').val());
-        localStorage.setItem('team', $("#team").val());
-        localStorage.setItem('position', $("#position").val());
+        localStorage.setItem('team_id', $("#team_id").val());
+        localStorage.setItem('position_id', $("#position_id").val());
         localStorage.setItem('email', $('#email').val());
-        localStorage.setItem('phone', $('#phone').val());
+        localStorage.setItem('phone_number', $('#phone_number').val());
     }
+
+    window.onbeforeunload = function() {
+        saveData();
+    }
+
+
 
     const initialValues = {
         name: localStorage.getItem('name') == 'undefined' ? '' : localStorage.getItem('name'),
         surname: localStorage.getItem('surname') == 'undefined' ? '' : localStorage.getItem('surname'),
-        team: localStorage.getItem('team') == 'null' ? '' : localStorage.getItem('team'),
-        position: localStorage.getItem('position') == 'null' ? '' : localStorage.getItem('position'),
+        team_id: localStorage.getItem('team_id') == 'null' ? '' : localStorage.getItem('team_id'),
+        position_id: localStorage.getItem('position_id') == 'null' ? '' : localStorage.getItem('position_id'),
         email: localStorage.getItem('email') == 'undefined' ? '' : localStorage.getItem('email'),
-        phone: localStorage.getItem('phone') == 'undefined' ? '' : localStorage.getItem('phone')
+        phone_number: localStorage.getItem('phone_number') == 'undefined' ? '' : localStorage.getItem('phone_number')
     }
 
-    console.log(localStorage.getItem('position'))
 
     const onSubmit = (values) => {
         setFormData({
             ...formData, 
             name: values.name,
             surname: values.surname,
-            team: values.team,
-            position: values.position,
+            team_id: selectedTeamId,
+            position_id: selectedPositionId,
             email: values.email,
-            phone: values.phone});
+            phone_number: values.phone_number});
 
-            localStorage.setItem('name', $('#name').val());
-            localStorage.setItem('surname', $('#surname').val());
-            localStorage.setItem('team', $("#team").val());
-            localStorage.setItem('position', $("#position").val());
-            localStorage.setItem('email', $('#email').val());
-            localStorage.setItem('phone', $('#phone').val());
+            saveData();
+            setPage((currPage) => currPage + 1);
             
-        
-
-            if (page === FormTitles.length) {
-              alert("FORM SUBMITTED", formData);
-            } else {
-              setPage((currPage) => currPage + 1);
-            }
           
     }
-
+    
     const validate = (values) => {
         let errors = {};
         if(!values.name) {errors.name = "Required"}
@@ -133,13 +127,13 @@ const Employee = ({formData, setFormData, page, setPage}) => {
         if(!values.surname) {errors.surname = "Required"}
         else if(!(/^[ა-ჰ]+$/).test(values.surname)) {errors.surname = "გამოიყენე ქართული"}
         if(values.surname.length < 2) {errors.surname = "2 სიმბოლო მინიმუმ"}
-        if(!values.team) {errors.team = "Required"}
-        if(!values.position) {errors.position = "Required"}
+        if(!values.team_id) {errors.team_id = "Required"}
+        if(!values.position_id) {errors.position_id = "Required"}
         if(!values.email) {errors.email = "Required"}
         else if(!values.email.endsWith("@redberry.ge")) {errors.email = "invalid format"}
-        if(!values.phone) {errors.phone = "Required"}
-        else if(!values.phone.startsWith('+995')) {errors.phone = "False format"}
-        else if(values.phone.length !== 13) {errors.phone = "False format"}
+        if(!values.phone_number) {errors.phone_number = "Required"}
+        else if(!values.phone_number.startsWith('+995')) {errors.phone_number = "False format"}
+        else if(values.phone_number.length !== 13) {errors.phone_number = "False format"}
         return errors;
     }
 
@@ -156,8 +150,8 @@ const Employee = ({formData, setFormData, page, setPage}) => {
  // For filtering the positions options
         if (teams){
             if (teams == undefined) {return 'error fetching data'}
-            var selectTeam = document.getElementById('team');
-            var selectPosition = document.getElementById('position');
+            var selectTeam = document.getElementById('team_id');
+            var selectPosition = document.getElementById('position_id');
     
             if (selectTeam.options[selectTeam.selectedIndex]) {
             var selectedTeamId = selectTeam.options[selectTeam.selectedIndex].id;
@@ -168,13 +162,13 @@ const Employee = ({formData, setFormData, page, setPage}) => {
             var selectedPositionId = selectPosition.options[selectPosition.selectedIndex].id;
             var selectedPositionValue = selectPosition.options[selectPosition.selectedIndex].value;
             }     
-        }   
-        
+        }  
+
     
 
     return (
         <>
-        <Link to="/" className='position-absolute' style={{top:15, left: 20}}><i class="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
+        <Link to="/" className='position-absolute' style={{top:15, left: 20}}><i className="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
         <div className='row  text-center justify-content-center' style={{fontSize: "12px"}}>
             <form onSubmit={formik.handleSubmit} style={{maxWidth: 900, minHeight: "100%"}}>
                 <div style={{padding: "50px 70px 10px 70px"}}>
@@ -211,18 +205,18 @@ const Employee = ({formData, setFormData, page, setPage}) => {
 
                     <div className='row justify-content-center my-5'>
                         <div className='form-group teams-div'>
-                            <select id='team' className='form-control' name='team' 
+                            <select id='team_id' className='form-control' name='team_id' 
                             style={{backgroundColor: "#EBEBEB", borderRadius: "8px", padding: "8px 24px", fontWeight: "700"}}
-                            { ...formik.getFieldProps('team')}>
+                            { ...formik.getFieldProps('team_id')}>
                                 <option value="" disabled hidden>თიმი</option>
                                 {teams && teams.map(({id, name}) => (
                                  <option name={id} id={id} key={id}>{name}</option>
                             ))}   
 
                             </select>
-                                {formik.touched.team && formik.errors.team 
+                                {formik.touched.team_id && formik.errors.team_id 
                                 ?
-                                <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.team}</small>
+                                <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.team_id}</small>
                                 : null
                                 } 
                         </div>
@@ -230,20 +224,20 @@ const Employee = ({formData, setFormData, page, setPage}) => {
 
                 <div className='row justify-content-center my-4'>
                     <div className='form-group'>
-                        <select id='position' className='form-control' name='position' 
+                        <select id='position_id' className='form-control' name='position_id' 
                         style={{backgroundColor: "#EBEBEB", borderRadius: "8px", padding: "8px 24px", fontWeight: "700"}}
-                        { ...formik.getFieldProps('position')}>
+                        { ...formik.getFieldProps('position_id')}>
                             <option value="" disabled hidden>პოზიცია</option>
                             {positions && positions.map(({id, name, team_id}) => (
                             team_id == selectedTeamId
                             ?
-                            <option key={id}>{name}</option> 
+                            <option id={id} key={id}>{name}</option> 
                             : null
                             ))}
                         </select>
-                                {formik.touched.position && formik.errors.position 
+                                {formik.touched.position_id && formik.errors.position_id 
                                 ?
-                                <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.position}</small>
+                                <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.position_id}</small>
                                 : 
                                 null
                         } 
@@ -268,14 +262,14 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                 
                 <div className='row my-4'>
                     <div className='form-group'>
-                        <label className="mx-2 my-1" htmlFor="phone" style={{float: "left"}}>ტელეფონის ნომერი</label>
+                        <label className="mx-2 my-1" htmlFor="phone_number" style={{float: "left"}}>ტელეფონის ნომერი</label>
                         <br />
-                        <input key="phone" id='phone' name="phone" className='form-control' refs="phone" type="text" placeholder="Phone" 
-                        { ...formik.getFieldProps('phone')}
+                        <input key="phone_number" id='phone_number' name="phone_number" className='form-control' refs="phone_number" type="text" placeholder="phone_number" 
+                        { ...formik.getFieldProps('phone_number')}
                         />
-                            {formik.touched.phone && formik.errors.phone 
+                            {formik.touched.phone_number && formik.errors.phone_number 
                             ?
-                            <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.phone}</small>
+                            <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.phone_number}</small>
                             : 
                             <small id="emailHelp" className="form-text text-muted" style={{float: "left"}}>უნდა აკმაყოფილებდეს ქართული მობ-ნომრის ფორმატს</small>
                             } 
