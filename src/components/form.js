@@ -39,7 +39,7 @@ const FileForm = () => {
         } else if (page === 1) {
             return <Laptop page={page} setPage={setPage} formData={formData} setFormData={setFormData}/>
         } else {
-            return <Success />
+            return <Success formData={formData} setFormData={setFormData}/>
         }
     };
 
@@ -60,7 +60,7 @@ const FileForm = () => {
             <h2 className=''> ლეპტოპის მახასიათებლები</h2> 
             </div>
             </div>  
-            :
+            : page == 1 ?
             <div className='row' >  
             <div className="row col-6 text-end justify-content-center">
                <h2> თანამშრომლის ინფორმაცია </h2>
@@ -72,14 +72,15 @@ const FileForm = () => {
                <hr style={{width: "140px", color: "black", float: "right", marginLeft: "33px", height: "2px", marginTop: "14px"}}/>
                </div>
                </div>  
-        }
+        : null}
         </div>
 
         <div className="body">{PageDisplay()}</div>
-
+{page == 0 || page == 1 ?
         <div className='footer'><div>
           <img className='p-5' width="160px" src={logo} alt="logo"></img>
           </div></div>
+          : null}
     </>    
     )
 }

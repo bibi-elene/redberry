@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import '../App.css';
-import Form from './form'
+import FileForm from './form'
 import {Link} from "react-router-dom";
-import { useFormik } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { validate} from 'graphql';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -74,10 +74,6 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
         fetchCpu();
     }, []);
 
-    useEffect((values) => {
-        ;
-    }, []);
-    
         
     const initialValues = {
         laptop_image: '',
@@ -92,26 +88,29 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
         laptop_price: localStorage.getItem('laptop_price') !== undefined ? localStorage.getItem('laptop_price') : '',
         laptop_state: localStorage.getItem('laptop_state')
     }
+    
+    console.log(formData.laptop_name, 1)
+
+    window.onbeforeunload = () => {
+        localStorage.setItem('laptop_image', $('#laptop_image').val());
+        localStorage.setItem('laptop_name', $('#laptop_name').val());
+        localStorage.setItem('laptop_brand_id', $("#laptop_brand_id").val());
+        localStorage.setItem('laptop_cpu', $("#laptop_cpu").val());
+        localStorage.setItem('laptop_cpu_cores', $('#laptop_cpu_cores').val());
+        localStorage.setItem('laptop_cpu_threads', $('#laptop_cpu_threads').val());
+        localStorage.setItem('laptop_ram', $("#laptop_ram").val());
+        localStorage.setItem('laptop_hard_drive_type', selectedType);
+        localStorage.setItem('laptop_purchase_date', $("#laptop_purchase_date").val());
+        localStorage.setItem('laptop_price', $("#laptop_price").val());
+        localStorage.setItem('laptop_state', selectedCondition);   
+    }
+
+
 
     const my_token = '02d26493adc8273c9e598948b8e434f8'
     const url = 'https://pcfy.redberryinternship.ge/api/laptop/create';
 
-    const onSubmit =  (values) => {
-
-        setFormData({
-            ...formData, 
-            laptop_image: values.laptop_image,
-            laptop_name: values.laptop_name,
-            laptop_brand_id: selectedBrand,
-            laptop_cpu: values.laptop_cpu,
-            laptop_cpu_cores: values.laptop_cpu_cores,
-            laptop_cpu_threads: values.laptop_cpu_threads,
-            laptop_ram: values.laptop_ram,
-            laptop_hard_drive_type: selectedType,
-            laptop_purchase_date: values.laptop_purchase_date,
-            laptop_price: values.laptop_price,
-            laptop_state: selectedCondition,
-            });    
+    const onSubmit =  (values) => { 
         
             let data = new FormData();
             data.append('name', formData.name);
@@ -149,9 +148,9 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
                 })
                 .catch(error => console.error(error), console.log("error fetching"))
 
-            }
+                setPage((currPage) => currPage + 1);
 
-        
+            }
 
     const regex = (/^[A-Za-z0-9!@#$%^&*()_+=]+$/)
 
@@ -164,35 +163,13 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
         
     }
 
-    const formik = useFormik({
-        initialValues,
-        onSubmit,
-        validate
-    })
-
-    const saveData = () => {
-        localStorage.setItem('laptop_image', $('#laptop_image').val());
-        localStorage.setItem('laptop_name', $('#laptop_name').val());
-        localStorage.setItem('laptop_brand_id', $("#laptop_brand_id").val());
-        localStorage.setItem('laptop_cpu', $("#laptop_cpu").val());
-        localStorage.setItem('laptop_cpu_cores', $('#laptop_cpu_cores').val());
-        localStorage.setItem('laptop_cpu_threads', $('#laptop_cpu_threads').val());
-        localStorage.setItem('laptop_ram', $("#laptop_ram").val());
-        localStorage.setItem('laptop_hard_drive_type', selectedType);
-        localStorage.setItem('laptop_purchase_date', $("#laptop_purchase_date").val());
-        localStorage.setItem('laptop_price', $("#laptop_price").val());
-        localStorage.setItem('laptop_state', selectedCondition);  
-    }
-
-    window.onbeforeunload = function() {
-        saveData();
-    }
 
      // value of laptop_hard_drive_type Radio
     //value of Condition Radio
 
     if (document.querySelector('input[name="laptop_hard_drive_type"]:checked')) {
-        var selectedType = document.querySelector('input[name="laptop_hard_drive_type"]:checked').value
+        var selectedType = document.querySelector('input[name="laptop_hard_drive_type"]:checked').value;
+
     } 
     if (document.querySelector('input[name="laptop_state"]:checked')) {
         var selectedCondition = document.querySelector('input[name="laptop_state"]:checked').value
@@ -225,55 +202,55 @@ if (brand) {
 }        
 
 
+const proceed = () => {
+    setFormData({
+        ...formData, 
+        laptop_name: $('laptop_name').val(),
+        });   
+        setPage((currPage) => currPage - 1);
+}
+
 
     if (loading) return ("Loading ...")
     if (error) return "Error: "
 
 
     return (
-        <>
+        <div className="row justify-content-center">
        
-       <div className='row text-center justify-content-center' style={{fontSize: "12px"}}>
+       <Formik className='row text-center justify-content-center' style={{fontSize: "12px"}}
+       initialValues={initialValues}
+       validate={validate}
+       onSubmit={onSubmit}
+       >
 
-       <form onSubmit={formik.handleSubmit} style={{maxWidth: 900, minHeight: "100%"}}>
+        {({ values }) => (
+
+       <Form style={{maxWidth: 900, minHeight: "100%"}}>
         <div className='row justify-content-center' style={{padding: "50px 70px 0 70px"}}>
 
         <div className='row align-content-center file-form mb-5' style={{minHeight: 150, maxHeight: 300, maxWidth: 700}}>
                 <label htmlFor="laptop_image" style={{fontSize: "15px", fontWeight: "900", color: "#4386A9", padding: "15px", fontWeight: "500"}}>ჩააგდე ან ატვირტე <br /> ლეპტოპის ფოტო <br/></label>
                 <label htmlFor='laptop_image'><a className='mt-4 btn btn-info' style={{color: "white", padding: "8px 40px", backgroundColor: "#62A1EB"}}>ატვირთე </a></label>
-                <input key="laptop_image" 
+                <Field key="laptop_image" 
                 type="file"
                 id="laptop_image" 
                 name="laptop_image"
                 accept="image/png, image/jpeg" 
-                {...formik.getFieldProps('laptop_image')}
                 />
-                    {formik.touched.laptop_image && formik.errors.laptop_image 
-                    ? 
-                    <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.laptop_image}</small>                        
-                    :
-                    <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                }  
         </div>
 
         <div className='row'>
                 <div className='form-group col-6'>
                         <label htmlFor='laptop_name' className='' style={{float: "left"}}>ლეპტოპის სახელი</label>
                         <br />
-                        <input key="laptop_name" id='laptop_name' className='form-control' type="text" name="laptop_name" 
-                        {...formik.getFieldProps('laptop_name')}
+                        <Field key="laptop_name" id='laptop_name' className='form-control' type="text" name="laptop_name" 
                         />
-                        {formik.touched.laptop_name && formik.errors.laptop_name 
-                        ? 
-                        <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.laptop_name}</small>                        
-                        :
-                        <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                        }                     
+                                         
                     </div>
 
                 <div className='form-group col-6' style={{marginTop: "18px"}}>
-                <select key="laptop_brand_id" id="laptop_brand_id" name='laptop_brand_id' className='form-control' required
-                  {...formik.getFieldProps('laptop_brand_id')}
+                <Field as="select" key="laptop_brand_id" id="laptop_brand_id" name='laptop_brand_id' className='form-control' required
                   style={{backgroundColor: "#EBEBEB", padding: "8px 24px"}}
                 >
                     <option value="" disabled hidden>ლეპტოპის ბრენდი</option>
@@ -281,66 +258,43 @@ if (brand) {
                             <option id={id} key={id}>{name}</option>
                             ))}
                            
-                </select>
-                            {formik.touched.laptop_brand_id && formik.errors.laptop_brand_id 
-                            ? 
-                            <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.laptop_brand_id}</small>                        
-                            :
-                            <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                            }  
+                </Field>
+                            
                  
                 </div>
             </div>
 
             <div className='row my-4'>
                 <div className='form-group col-4' style={{marginTop: "34px"}}>
-                <select key="laptop_cpu" id="laptop_cpu" name='laptop_cpu' className='form-control' required
+                <Field as="select" key="laptop_cpu" id="laptop_cpu" name='laptop_cpu' className='form-control' required
                 style={{backgroundColor: "#EBEBEB", padding: "8px 24px"}}
-                    {...formik.getFieldProps('laptop_cpu')}
                     >
                     <option value="" disabled hidden>CPU</option>
                         {cpu && cpu.map(({id, name}) => (
                             <option key={id}
                             >{name}</option>
                         ))}      
-                </select>
-                            {formik.touched.laptop_cpu && formik.errors.laptop_cpu 
-                            ? 
-                            <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.cpu}</small>                        
-                            :
-                            <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                            } 
+                </Field>
+                         
                 </div>
 
                 <div className='form-group col-4 '>
                 <label htmlFor='laptop_cpu_cores' className='pb-3' style={{float: "left"}}>CPU-ს ბირთვი</label>
-                <input 
+                <Field 
                 className='form-control' 
                 type="number" 
                 id='laptop_cpu_cores' 
                 name="laptop_cpu_cores" 
                 key="laptop_cpu_cores"
-                {...formik.getFieldProps('laptop_cpu_cores')}
                 />
-                    {formik.touched.laptop_cpu_cores && formik.errors.laptop_cpu_cores 
-                    ? 
-                    <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.laptop_cpu_cores}</small>                        
-                    :
-                    <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                }  
+                     
                 </div>
 
                 <div className='form-group col-4 '>
                 <label htmlFor='laptop_cpu_threads' className='pb-3' style={{float: "left"}}>CPU-ს ნაკადი</label>
-                <input className='form-control' type="number" key="laptop_cpu_threads" id="laptop_cpu_threads" name="laptop_cpu_threads"
-                {...formik.getFieldProps('laptop_cpu_threads')}
+                <Field className='form-control' type="number" key="laptop_cpu_threads" id="laptop_cpu_threads" name="laptop_cpu_threads"
                 />
-                    {formik.touched.laptop_cpu_threads && formik.errors.laptop_cpu_threads 
-                    ? 
-                    <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.laptop_cpu_threads}</small>                        
-                    :
-                    <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                }
+                 
                
                 </div>
 
@@ -349,15 +303,9 @@ if (brand) {
             <div className='row'>
             <div className='form-group col-6 my-3'>
                 <label htmlFor='laptop_ram' className='pb-3' style={{float: "left"}}>ლეპტოპის laptop_ram (GB)</label>
-                <input className='form-control' type="number" name="laptop_ram" key="laptop_ram" id="laptop_ram"
-                {...formik.getFieldProps('laptop_ram')}
+                <Field className='form-control' type="number" name="laptop_ram" key="laptop_ram" id="laptop_ram"
                 />
-                    {formik.touched.laptop_ram && formik.errors.laptop_ram 
-                    ? 
-                    <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.laptop_ram}</small>                        
-                    :
-                    <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                }
+                  
                 
                 </div>
             
@@ -365,11 +313,12 @@ if (brand) {
                 <label htmlFor='laptop_hard_drive_type' className='pb-4'>მეხსიერების ტიპი</label>
                 <br />
                 <div className="form-check form-check-inline">
-                <input className="form-check-input" type="radio" name="laptop_hard_drive_type" id="memoryVal1" value="SSD" required/>
+                <Field className="form-check-input" type="radio" name="laptop_hard_drive_type" id="SSD" value="SSD" required/>
                 <label className="form-check-label" htmlFor="inlineRadio1">SSD</label>
                 </div>
+
                 <div className="form-check form-check-inline">
-                <input className="form-check-input" type="radio" name="laptop_hard_drive_type" id="memoryVal2" value="HDD" />
+                <Field className="form-check-input" type="radio" name="laptop_hard_drive_type" id="HDD" value="HDD" />
                 <label className="form-check-label" htmlFor="inlineRadio2">HDD</label>
                 </div>
             </div>
@@ -380,28 +329,21 @@ if (brand) {
                 <div className='form-group col-6 my-3'>
                 <label htmlFor="laptop_purchase_date" style={{float: "left"}}>შეძენის რიცხვი (არჩევითი)</label>
                 <br />
-                <input name='laptop_purchase_date' id="laptop_purchase_date" key="laptop_purchase_date" className='form-control mt-3' type="date"
-                    {...formik.getFieldProps('laptop_purchase_date')}
+                <Field name='laptop_purchase_date' id="laptop_purchase_date" key="laptop_purchase_date" className='form-control mt-3' type="date"
                 />
                 </div>
 
                 <div className='form-group col-6 my-3'>
                 <label htmlFor='laptop_price' className='pb-3' style={{float: "left"}}>ლეპტოპის ფასი</label>
                 <br />
-                <input 
+                <Field 
                  className='form-control'
                  type="number"
                  name="laptop_price" 
                  key="laptop_price"
                  id="laptop_price"
-                {...formik.getFieldProps('laptop_price')}
                 />
-                    {formik.touched.laptop_price && formik.errors.laptop_price 
-                    ? 
-                    <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.laptop_price}</small>                        
-                    :
-                    <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-                }
+                  
                 
                 </div>
             </div>
@@ -411,7 +353,7 @@ if (brand) {
                 <label htmlFor='laptop_state' className='pb-4'>ლეპტოპის მდგომარეობა</label>
                 <br />
                 <div className="form-check form-check-inline">
-                <input className="form-check-input" 
+                <Field className="form-check-input" 
                 type="radio" name="laptop_state" 
                 id="conditionVal1" 
                 key="conditionVal1" 
@@ -419,7 +361,7 @@ if (brand) {
                 <label className="form-check-label" htmlFor="inlineRadio1">ახალი</label>
                 </div>
                 <div className="form-check form-check-inline">
-                <input className="form-check-input" 
+                <Field className="form-check-input" 
                 type="radio" 
                 name="laptop_state" 
                 id="conditionVal2" 
@@ -436,9 +378,8 @@ if (brand) {
     style={{color: "#62A1EB", float: "left"}}
     disabled={page == 0}
     onClick={() => {
-      setPage((currPage) => currPage - 1);
-      saveData();
-    }}>
+      proceed();    
+      }}>
         ეკან
     </a>
 <button
@@ -450,12 +391,12 @@ if (brand) {
     </button>
   </div>
   </div>
+                </Form>
+                    )}  
+            </Formik>
 
-                </form>
-            </div>
 
-
-        </>
+        </div>
     )
 }
 

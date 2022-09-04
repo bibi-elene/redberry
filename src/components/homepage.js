@@ -31,7 +31,7 @@ const Homepage = () => {
             </div>
 
             <div className='row justify-content-center'>
-            <Link to="/form" className='btn btn-info my-1 mx-2'
+            <Link to="/list" className='btn btn-info my-1 mx-2'
             style={{fontSize: "20px", width: "auto",borderRadius: "8px", color: "white", backgroundColor: "#62A1EB", padding: "18px 60px", width: "350px"}}
             id="btn-add">
             ჩანაწერის სია 

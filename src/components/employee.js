@@ -78,18 +78,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
 
     // Store items locally to avoid  
     // Losing data on Refresh
-    const saveData = () => {
-        localStorage.setItem('name', $('#name').val());
-        localStorage.setItem('surname', $('#surname').val());
-        localStorage.setItem('team_id', $("#team_id").val());
-        localStorage.setItem('position_id', $("#position_id").val());
-        localStorage.setItem('email', $('#email').val());
-        localStorage.setItem('phone_number', $('#phone_number').val());
-    }
-
-    window.onbeforeunload = function() {
-        saveData();
-    }
+    
 
 
 
@@ -100,6 +89,17 @@ const Employee = ({formData, setFormData, page, setPage}) => {
         position_id: localStorage.getItem('position_id') == 'null' ? '' : localStorage.getItem('position_id'),
         email: localStorage.getItem('email') == 'undefined' ? '' : localStorage.getItem('email'),
         phone_number: localStorage.getItem('phone_number') == 'undefined' ? '' : localStorage.getItem('phone_number')
+    }
+
+    window.onbeforeunload = () => {
+
+            localStorage.setItem('name', $('#name').val());
+            localStorage.setItem('surname', $('#surname').val());
+            localStorage.setItem('team_id', $("#team_id").val());
+            localStorage.setItem('position_id', $("#position_id").val());
+            localStorage.setItem('email', $('#email').val());
+            localStorage.setItem('phone_number', $('#phone_number').val());
+        
     }
 
 
@@ -113,10 +113,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
             email: values.email,
             phone_number: values.phone_number});
 
-            saveData();
-            setPage((currPage) => currPage + 1);
-            
-          
+            setPage((currPage) => currPage + 1);   
     }
     
     const validate = (values) => {

@@ -4,6 +4,9 @@ import FileForm from './components/form';
 import Laptop from './components/laptop';
 import Success from './components/success';
 import Employee from './components/employee';
+import List from './components/list'
+import Details from './components/details'
+
 
 import logo from './logo.png';
 import {
@@ -24,6 +27,8 @@ function App() {
       <Route path='/employee' element={<Employee />} />
       <Route path='/laptop' element={<Laptop />} />
       <Route path='/success' element={<Success />} />
+      <Route path='/list' element={<List />} />
+      <Route exact path="/:id" element={<Details />} /> 
       </Routes>
       </Router>  
     </div>
