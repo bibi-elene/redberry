@@ -8,8 +8,6 @@ import logo from '../LOGO-10 1.png'
 
 const FileForm = () => {
     const [page, setPage] = useState(0);
-    let [checked, setChecked] = useState(0);
-    let [checked2, setChecked2] = useState(0);
 
 
     const [formData, setFormData] = useState({

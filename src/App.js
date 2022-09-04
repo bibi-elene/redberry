@@ -1,6 +1,6 @@
 import './App.css';
 import Homepage from './components/homepage';
-import Form from './components/form';
+import FileForm from './components/form';
 import Laptop from './components/laptop';
 import Success from './components/success';
 import Employee from './components/employee';
@@ -20,7 +20,7 @@ function App() {
     <Router>
       <Routes>
       <Route path='/' element={<Homepage />} />
-      <Route path='/form' element={<Form />} />
+      <Route path='/form' element={<FileForm />} />
       <Route path='/employee' element={<Employee />} />
       <Route path='/laptop' element={<Laptop />} />
       <Route path='/success' element={<Success />} />

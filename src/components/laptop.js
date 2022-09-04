@@ -97,11 +97,12 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
     const url = 'https://pcfy.redberryinternship.ge/api/laptop/create';
 
     const onSubmit = (values) => {
+        
         setFormData({
             ...formData, 
-            laptop_image: values.laptop_image[0],
+            laptop_image: values.laptop_image,
             laptop_name: values.laptop_name,
-            laptop_brand_id: selectBrand,
+            laptop_brand_id: selectedBrand,
             laptop_cpu: values.laptop_cpu,
             laptop_cpu_cores: values.laptop_cpu_cores,
             laptop_cpu_threads: values.laptop_cpu_threads,
@@ -110,16 +111,34 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
             laptop_purchase_date: values.laptop_purchase_date,
             laptop_price: values.laptop_price,
             laptop_state: selectedCondition,
-            token: my_token
             });        
+
+            let data = new FormData();
+            data.append('name', formData.name);
+            data.append('surname', formData.surname);
+            data.append('team_id', formData.team_id);
+            data.append('position_id', formData.position_id);
+            data.append('email', formData.email);
+            data.append('phone_number', formData.phone_number);
+            data.append('laptop_image', document.getElementById('laptop_image').files[0]);
+            data.append('laptop_brand_id', formData.laptop_brand_id);
+            data.append('laptop_cpu', formData.laptop_cpu);
+            data.append('laptop_name', formData.laptop_name);
+            data.append('laptop_brand_id', formData.laptop_brand_id);
+            data.append('laptop_cpu_cores', formData.laptop_cpu_cores);
+            data.append('laptop_cpu_threads', formData.laptop_cpu_threads);
+            data.append('laptop_ram', formData.laptop_ram);
+            data.append('laptop_hard_drive_type', formData.laptop_hard_drive_type);
+            data.append('laptop_purchase_date', formData.laptop_purchase_date);
+            data.append('laptop_price', formData.laptop_price);
+            data.append('laptop_state', formData.laptop_state);
+            data.append('token', my_token);
 
             const requestOptions = {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                formData
-                })
+                body: data
             }
+
 
 
             fetch(url, requestOptions)
@@ -128,6 +147,7 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
                     return res.json();
                     }
                 })
+
                 .catch(error => console.error(error))
 
         }
