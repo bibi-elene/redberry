@@ -96,8 +96,8 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
     const my_token = '02d26493adc8273c9e598948b8e434f8'
     const url = 'https://pcfy.redberryinternship.ge/api/laptop/create';
 
-    const onSubmit = (values) => {
-        
+    const onSubmit =  (values) => {
+
         setFormData({
             ...formData, 
             laptop_image: values.laptop_image,
@@ -111,8 +111,8 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
             laptop_purchase_date: values.laptop_purchase_date,
             laptop_price: values.laptop_price,
             laptop_state: selectedCondition,
-            });        
-
+            });    
+        
             let data = new FormData();
             data.append('name', formData.name);
             data.append('surname', formData.surname);
@@ -121,17 +121,17 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
             data.append('email', formData.email);
             data.append('phone_number', formData.phone_number);
             data.append('laptop_image', document.getElementById('laptop_image').files[0]);
-            data.append('laptop_brand_id', formData.laptop_brand_id);
-            data.append('laptop_cpu', formData.laptop_cpu);
-            data.append('laptop_name', formData.laptop_name);
-            data.append('laptop_brand_id', formData.laptop_brand_id);
-            data.append('laptop_cpu_cores', formData.laptop_cpu_cores);
-            data.append('laptop_cpu_threads', formData.laptop_cpu_threads);
-            data.append('laptop_ram', formData.laptop_ram);
-            data.append('laptop_hard_drive_type', formData.laptop_hard_drive_type);
-            data.append('laptop_purchase_date', formData.laptop_purchase_date);
-            data.append('laptop_price', formData.laptop_price);
-            data.append('laptop_state', formData.laptop_state);
+            data.append('laptop_brand_id', values.laptop_brand_id);
+            data.append('laptop_cpu', values.laptop_cpu);
+            data.append('laptop_name', values.laptop_name);
+            data.append('laptop_brand_id', selectedBrand);
+            data.append('laptop_cpu_cores', values.laptop_cpu_cores);
+            data.append('laptop_cpu_threads', values.laptop_cpu_threads);
+            data.append('laptop_ram', values.laptop_ram);
+            data.append('laptop_hard_drive_type', values.laptop_hard_drive_type);
+            data.append('laptop_purchase_date', values.laptop_purchase_date);
+            data.append('laptop_price', values.laptop_price);
+            data.append('laptop_state', values.laptop_state);
             data.append('token', my_token);
 
             const requestOptions = {
@@ -139,18 +139,19 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
                 body: data
             }
 
-
-
             fetch(url, requestOptions)
                 .then((res) => {
                 if(res.ok){  
                     return res.json();
-                    }
+                    }})
+                .then((data) => {
+                    console.log(data)
                 })
+                .catch(error => console.error(error), console.log("error fetching"))
 
-                .catch(error => console.error(error))
+            }
 
-        }
+        
 
     const regex = (/^[A-Za-z0-9!@#$%^&*()_+=]+$/)
 

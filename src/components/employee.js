@@ -163,7 +163,6 @@ const Employee = ({formData, setFormData, page, setPage}) => {
             var selectedPositionValue = selectPosition.options[selectPosition.selectedIndex].value;
             }     
         }  
-
     
 
     return (
