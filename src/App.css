@@ -103,8 +103,69 @@ i {
 
 .list-container {
   width: 40%;
-  height: 200px;
+  min-height: 200px;
+  height: auto;
+  min-width: 350px;
 }
+
+span {
+  font-weight: 400;
+  color: #797979;
+  
+}
+
+.user {
+  width: 30%;
+  padding: 10px;
+  margin-left: 10px;
+}
+
+.laptop {
+  width: 25%;
+}
+
+@media only screen and (max-width: 800px) { 
+  .user-image {
+    width: 100%;
+  }
+
+  .details {
+    width: 40%;
+  }
+
+}
+
+@media only screen and (max-width: 500px) {
+    .laptop {
+      width: auto;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .details-container .text-start {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .details-container .row {
+      margin: 0 !important;
+    }
+}
+
+
+p {
+  font-weight: 500;
+  color: #2E2E2E;
+}
+
+@media only screen and (max-width: 900px)  {
+  .list-container {
+    width: auto;
+    height: auto;
+  }
+
+}
+
 
 
 .error{

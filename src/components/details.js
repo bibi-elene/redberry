@@ -50,20 +50,108 @@ const Details = () => {
 
 if (details) {
     return (
-<>                     
-<h1> ლეპტოპის ინფო </h1>
-<Link to="/" className='position-absolute' style={{top:15, left: 20}}><i className="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
-        <div className='row text-center justify-content-center align-items-center'>
+<>           
+<Link to="/list" className='position-absolute' style={{top:20, left: 40}}><i className="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
+<h1 className='m-5'> ლეპტოპის ინფო </h1>
+        <div className='container details-container text-center justify-content-between align-items-center'>
             {
-            details.map(({user, laptop, name, surname, id, brand_id, laptop_image}) => (
-                <div key={id} className="list-container " style={{margin: "30px", borderRadius: "20px", }}>
-                    <img style={{float: "left", borderRadius: "10px", marginRight: "40px"}} width="300px" height="auto" src={`https://pcfy.redberryinternship.ge/${laptop.image}`} alt="img"></img>
-                    
-                    <div className="details text-start align-items-center mt-4" style={{fontWeight: "700"}}>
+            details.map(({user, laptop}) => (
+                <div key={id} className="row justify-content-center text-center " style={{margin: "30px", borderRadius: "20px", }}>
+                    <div className='row'>
 
-                    <p> id: {laptop.brand_id}</p>
-                    <p> name: {user.name}</p>
-                    <p> surname: {user.surname}</p>
+                    <div className='user user-image mt-4'> 
+                    <img style={{borderRadius: "10px", maxWidth: "100%"}} width="auto" height="auto" src={`https://pcfy.redberryinternship.ge/${laptop.image}`} alt="img"></img>
+                    </div>
+
+                    <div className="user details align-items-center mt-4" style={{fontWeight: "700"}}>
+                        <div className='text-start px-5'> 
+                    <p> სახელი: </p>
+                    <p> თიმი: </p>
+                    <p> პოზიცია: </p>
+                    <p> მეილი: </p>                    
+                    <p> ტელ. ნომერი: </p>
+                    </div>
+                    </div>
+
+                    <div className="user details align-items-center mt-4" style={{fontWeight: "700"}}>
+                        <div className='text-start'> 
+                    <p> <span>{user.name} {user.surname}</span></p>
+                    <p> <span>{user.team_id}</span></p>
+                    <p> <span>{user.position_id}</span></p>
+                    <p> <span>{user.email}</span></p>                    
+                    <p> <span>{user.phone_number}</span></p>
+                    </div>
+                    </div>
+                    </div>
+
+                    
+                <hr className='mt-5'/>
+
+
+                    <div className='row'>
+                    <div className="laptop align-items-center mt-4" style={{fontWeight: "700"}}>
+                        <div className='text-start'> 
+                    <p> ლეპტოპის  სახელი: </p>
+                    <p> ლეპტოპის ბრენდი: </p>
+                    <p> RAM: </p>
+                    <p> მეხსიერების ტიპი: </p>                    
+                    </div>
+                    </div>
+
+                    <div className="laptop align-items-center mt-4" style={{fontWeight: "700"}}>
+                        <div className='text-start px-5'> 
+                    <p> <span>{laptop.name}</span></p>
+                    <p> <span>{laptop.brand_id}</span></p>
+                    <p> <span>{laptop.ram}</span></p>                    
+                    <p> <span>{laptop.hard_drive_type}</span></p>
+                    </div>
+                    </div>
+
+                    <div className="laptop align-items-center mt-4" style={{fontWeight: "700"}}>
+                        <div className='text-start'> 
+                    <p> CPU: </p>
+                    <p> CPU-ს ბირთვი: </p>
+                    <p> CPU-ს ნაკადი: </p>
+                    </div>
+                    </div>
+
+                    <div className="laptop align-items-center mt-4" style={{fontWeight: "700"}}>
+                        <div className='text-start'> 
+                    <p> <span>{laptop.cpu.name}</span></p>
+                    <p> <span>{laptop.cpu.cores}</span></p>                    
+                    <p> <span>{laptop.cpu.threads}</span></p>
+                    </div>
+                    </div>
+                    </div>
+
+                    <hr className='mt-5'/>
+                    
+                    <div className='row'>
+                    <div className="laptop details align-items-center mt-4" style={{fontWeight: "700"}}>
+                        <div className='text-start'> 
+                        <p> ლეპტოპის მდგომარეობა: </p>                    
+                        <p> ლეპტოპის ფასი: </p>
+                    </div>
+                    </div>
+
+                    <div className="laptop details align-items-center mt-4" style={{fontWeight: "700"}}>
+                        <div className='text-start'>
+                    <p> <span>{laptop.state}</span></p>                    
+                    <p> <span>{laptop.price} $ </span></p>
+                    </div>
+                    </div>
+
+                    <div className="laptop details align-items-center mt-4" style={{fontWeight: "700"}}>
+                        <div className='text-start px-5'>               
+                    <p> შეძენის რიცხვი: </p>
+                    </div>
+                    </div>
+
+                    <div className="laptop details align-items-center mt-4" style={{fontWeight: "700"}}>
+                        <div className='text-start'>                
+                    <p> <span>{laptop.purchase_date}</span></p>
+                    </div>
+                    </div>
                     </div>
                 </div>
                 ))
