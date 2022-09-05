@@ -23,11 +23,11 @@ function App() {
     <Router>
       <Routes>
       <Route path='/redberry' element={<Homepage />} />
-      <Route path='/form' element={<FileForm />} />
-      <Route path='/employee' element={<Employee />} />
-      <Route path='/laptop' element={<Laptop />} />
-      <Route path='/success' element={<Success />} />
-      <Route path='/list' element={<List />} />
+      <Route path='/redberry/form' element={<FileForm />} />
+      <Route path='/redberry/employee' element={<Employee />} />
+      <Route path='/redberry/laptop' element={<Laptop />} />
+      <Route path='/redberry/success' element={<Success />} />
+      <Route path='/redberry/list' element={<List />} />
       <Route exact path="/:id" element={<Details />} /> 
       </Routes>
       </Router>  

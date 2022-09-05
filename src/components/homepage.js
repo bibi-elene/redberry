@@ -23,7 +23,7 @@ const Homepage = () => {
             <div className="row homepage">
 
         <div className='row justify-content-center'>
-            <Link to="/form" className='btn btn-info my-3 mx-2'
+            <Link to="/redberry/form" className='btn btn-info my-3 mx-2'
             style={{fontSize: "20px", width: "auto",borderRadius: "8px", color: "white", backgroundColor: "#62A1EB", padding: "18px 60px", width: "350px"}}
             id="btn-add">
             ჩანაწერის დამატება 
@@ -31,7 +31,7 @@ const Homepage = () => {
             </div>
 
             <div className='row justify-content-center'>
-            <Link to="/list" className='btn btn-info my-1 mx-2'
+            <Link to="/redberry/list" className='btn btn-info my-1 mx-2'
             style={{fontSize: "20px", width: "auto",borderRadius: "8px", color: "white", backgroundColor: "#62A1EB", padding: "18px 60px", width: "350px"}}
             id="btn-add">
             ჩანაწერის სია 
