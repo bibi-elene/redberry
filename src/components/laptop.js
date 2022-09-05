@@ -80,15 +80,15 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
         
     const initialValues = {
         laptop_image: '',
-        laptop_name: localStorage.getItem('laptop_name') !== undefined ? localStorage.getItem('laptop_name') : '',
-        laptop_brand_id: localStorage.getItem('laptop_brand_id') !== undefined ? localStorage.getItem('laptop_brand_id') : '',
-        laptop_cpu: localStorage.getItem('laptop_cpu') !== undefined ? localStorage.getItem('laptop_cpu') : '',
-        laptop_cpu_cores: localStorage.getItem('laptop_cpu_cores') !== undefined ? localStorage.getItem('laptop_cpu_cores') : '',
-        laptop_cpu_threads: localStorage.getItem('laptop_cpu_threads') !== undefined ? localStorage.getItem('laptop_cpu_threads') : '',
-        laptop_ram: localStorage.getItem('laptop_ram') !== undefined ? localStorage.getItem('laptop_ram') : '',
+        laptop_name: localStorage.getItem('laptop_name') ? localStorage.getItem('laptop_name') : '',
+        laptop_brand_id: localStorage.getItem('laptop_brand_id') ? localStorage.getItem('laptop_brand_id') : '',
+        laptop_cpu: localStorage.getItem('laptop_cpu') ? localStorage.getItem('laptop_cpu') : '',
+        laptop_cpu_cores: localStorage.getItem('laptop_cpu_cores') ? localStorage.getItem('laptop_cpu_cores') : '',
+        laptop_cpu_threads: localStorage.getItem('laptop_cpu_threads') ? localStorage.getItem('laptop_cpu_threads') : '',
+        laptop_ram: localStorage.getItem('laptop_ram') ? localStorage.getItem('laptop_ram') : '',
         laptop_hard_drive_type: localStorage.getItem('laptop_hard_drive_type'),
-        laptop_purchase_date: localStorage.getItem('laptop_purchase_date') !== undefined ? localStorage.getItem('laptop_purchase_date') : '',
-        laptop_price: localStorage.getItem('laptop_price') !== undefined ? localStorage.getItem('laptop_price') : '',
+        laptop_purchase_date: localStorage.getItem('laptop_purchase_date') ? localStorage.getItem('laptop_purchase_date') : '',
+        laptop_price: localStorage.getItem('laptop_price') ? localStorage.getItem('laptop_price') : '',
         laptop_state: localStorage.getItem('laptop_state')
     }
     
@@ -149,6 +149,9 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
             }
 
     const validationSchema = Yup.object ({
+        laptop_image: Yup.mixed()
+        .nullable()
+        .required("ატვირთეთ სურათი"),
         laptop_name: Yup.string().matches(regex).required("Please select a product"),
         laptop_brand_id: Yup.string().required("Please select a product"),
         laptop_cpu: Yup.string().required("Please select a product"),
@@ -175,48 +178,17 @@ if (brand) {
 }        
 
 const proceed = () => {   
-    localStorage.setItem('laptop_name', $('#laptop_name').val());
-    localStorage.setItem('laptop_brand_id', $("#laptop_brand_id").val());
-    localStorage.setItem('laptop_cpu', $("#laptop_cpu").val());
-    localStorage.setItem('laptop_cpu_cores', $('#laptop_cpu_cores').val());
-    localStorage.setItem('laptop_cpu_threads', $('#laptop_cpu_threads').val());
-    localStorage.setItem('laptop_ram', $("#laptop_ram").val());
-    localStorage.setItem('laptop_hard_drive_type', formData.laptop_hard_drive_type);
-    localStorage.setItem('laptop_purchase_date', $("#laptop_purchase_date").val());
-    localStorage.setItem('laptop_price', $("#laptop_price").val());
-    localStorage.setItem('laptop_state', formData.laptop_state);   
+        localStorage.setItem('laptop_name', $('#laptop_name').val());
+        localStorage.setItem('laptop_brand_id', $("#laptop_brand_id").val());
+        localStorage.setItem('laptop_cpu', $("#laptop_cpu").val());
+        localStorage.setItem('laptop_cpu_cores', $('#laptop_cpu_cores').val());
+        localStorage.setItem('laptop_cpu_threads', $('#laptop_cpu_threads').val());
+        localStorage.setItem('laptop_ram', $("#laptop_ram").val());
+        localStorage.setItem('laptop_hard_drive_type', formData.laptop_hard_drive_type);
+        localStorage.setItem('laptop_purchase_date', $("#laptop_purchase_date").val());
+        localStorage.setItem('laptop_price', $("#laptop_price").val());
+        localStorage.setItem('laptop_state', formData.laptop_state);   
         setPage((currPage) => currPage - 1);
-}
-
-function myFunction(){
-    var x = document.getElementById("laptop_image");
-    var txt = "";
-    if ('files' in x) {
-      if (x.files.length == 0) {
-        txt = "Select one or more files.";
-      } else {
-        for (var i = 0; i < x.files.length; i++) {
-          var file = x.files[i];
-          if ('name' in file) {
-            txt += file.name;
-          }
-          if ('size' in file) {
-            txt += "size: " + file.size + " bytes";
-          }
-        }
-      }
-    } 
-    else {
-      if (x.value == "") {
-        txt += "Select one or more files.";
-      } else {
-        txt += "The files property is not supported by your browser!";
-        txt  += "<br>The path of the selected file: " + x.value; 
-      }
-    }
-
-    document.getElementById("file-display").innerHTML = '' + '  ' + txt;
-
 }
 
     if (loading) return ("Loading ...")
@@ -228,7 +200,7 @@ function myFunction(){
             
             <div className='row laptop-container text-center justify-content-center' style={{fontSize: "12px"}}>
             
-            <form onSubmit={formik.handleSubmit} style={{maxWidth: 900, minHeight: "100%"}}>
+            <form id="laptop-form" onSubmit={formik.handleSubmit} style={{maxWidth: 900, minHeight: "100%"}}>
             <div className='row justify-content-center' style={{padding: "50px 70px 0 70px"}}>
             
             <div className='row align-content-center file-form mb-2' style={{minHeight: 150, maxHeight: 300, maxWidth: 700}}>
@@ -253,7 +225,7 @@ function myFunction(){
             <div className='form-group col-6'>
             <label htmlFor='laptop_name' className='' style={{float: "left"}}>ლეპტოპის სახელი</label>
             <br />
-            <input key="laptop_name" id='laptop_name' className='form-control' type="text" name="laptop_name"
+            <input key="laptop_name" id='laptop_name' className='form-control' type="text" name="laptop_name" placeholder='HP'
             {...formik.getFieldProps('laptop_name')}
             style={{borderColor: formik.errors.laptop_name ? "red" : "#4D9AC3"}}
             />
@@ -313,6 +285,7 @@ function myFunction(){
             id='laptop_cpu_cores'
             name="laptop_cpu_cores"
             key="laptop_cpu_cores"
+            placeholder='14'
             {...formik.getFieldProps('laptop_cpu_cores')}
             style={{borderColor: formik.errors.laptop_cpu_cores ? "red" : "#4D9AC3"}}
             />
@@ -326,7 +299,7 @@ function myFunction(){
             
             <div className='form-group col-4 '>
             <label htmlFor='laptop_cpu_threads' className='pb-3' style={{float: "left"}}>CPU-ს ნაკადი</label>
-            <input className='form-control' type="number" key="laptop_cpu_threads" id="laptop_cpu_threads" name="laptop_cpu_threads"
+            <input className='form-control' type="number" key="laptop_cpu_threads" id="laptop_cpu_threads" name="laptop_cpu_threads" placeholder='365'
             {...formik.getFieldProps('laptop_cpu_threads')}
             style={{borderColor: formik.errors.laptop_cpu_threads ? "red" : "#4D9AC3"}}
             />
@@ -344,7 +317,7 @@ function myFunction(){
             <div className='row'>
             <div className='form-group col-6 my-3'>
             <label htmlFor='laptop_ram' className='pb-3' style={{float: "left"}}>ლეპტოპის laptop_ram (GB)</label>
-            <input className='form-control' type="number" name="laptop_ram" key="laptop_ram" id="laptop_ram"
+            <input className='form-control' type="number" name="laptop_ram" key="laptop_ram" id="laptop_ram" placeholder='16'
             {...formik.getFieldProps('laptop_ram')}
             style={{borderColor: formik.errors.laptop_ram ? "red" : "#4D9AC3"}}
             />
@@ -407,7 +380,8 @@ function myFunction(){
             <div className='form-group col-6 my-3'>
             <label htmlFor="laptop_purchase_date" style={{float: "left"}}>შეძენის რიცხვი (არჩევითი)</label>
             <br />
-            <input name='laptop_purchase_date' id="laptop_purchase_date" key="laptop_purchase_date" className='form-control mt-3' type="date"
+            <input name='laptop_purchase_date' id="laptop_purchase_date" key="laptop_purchase_date" className='form-control mt-3' type="text" onFocus={(e) => (e.target.type = "date")}
+        onBlur={(e) => (e.target.type = "text")} placeholder='დდ/თთ/წწწწ'
             {...formik.getFieldProps('laptop_purchase_date')}
             />
             </div>

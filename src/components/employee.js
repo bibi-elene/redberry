@@ -83,12 +83,12 @@ const Employee = ({formData, setFormData, page, setPage}) => {
 
 
     const initialValues = {
-        name: localStorage.getItem('name') != undefined ? localStorage.getItem('name') : '',
-        surname: localStorage.getItem('surname') !== undefined ? localStorage.getItem('surname') : '',
-        team_id: localStorage.getItem('team_id') !== undefined ? localStorage.getItem('team_id') : '',
-        position_id: localStorage.getItem('position_id') !== undefined ? localStorage.getItem('position_id') : '',
-        email: localStorage.getItem('email') !== undefined ? localStorage.getItem('email') : '',
-        phone_number: localStorage.getItem('phone_number') !== undefined ? localStorage.getItem('phone_number') : '',
+        name: localStorage.getItem('name') ? localStorage.getItem('name') : '',
+        surname: localStorage.getItem('surname') ? localStorage.getItem('surname') : '',
+        team_id: localStorage.getItem('team_id') ? localStorage.getItem('team_id') : '',
+        position_id: localStorage.getItem('position_id') ? localStorage.getItem('position_id') : '',
+        email: localStorage.getItem('email') ? localStorage.getItem('email') : '',
+        phone_number: localStorage.getItem('phone_number') ? localStorage.getItem('phone_number') : '',
     }
 
     window.onbeforeunload = () => {
@@ -101,7 +101,6 @@ const Employee = ({formData, setFormData, page, setPage}) => {
             localStorage.setItem('phone_number', $('#phone_number').val());
         
     }
-
 
 
     const onSubmit = (values) => {
@@ -120,6 +119,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
             localStorage.setItem('position_id', $("#position_id").val());
             localStorage.setItem('email', $('#email').val());
             localStorage.setItem('phone_number', $('#phone_number').val());
+            
 
             setPage((currPage) => currPage + 1);   
     }
@@ -174,14 +174,14 @@ const Employee = ({formData, setFormData, page, setPage}) => {
         <>
         <Link to="/" className='position-absolute' style={{top:15, left: 20}}><i className="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
         <div className='row employee-container  text-center justify-content-center' style={{fontSize: "12px"}}>
-            <form onSubmit={formik.handleSubmit} style={{maxWidth: 900, minHeight: "100%"}}>
+            <form id="employee-form" onSubmit={formik.handleSubmit} style={{maxWidth: 900, minHeight: "100%"}}>
                 <div style={{padding: "50px 70px 10px 70px"}}>
                 <div className='row'>
 
                 <div className='form-group col-6'>
                         <label htmlFor='name' className='' style={{float: "left"}}>სახელი</label>
                         <br />
-                        <input id='name' key='name' className='form-control' type="text" name="name" 
+                        <input id='name' key='name' className='form-control' type="text" name="name" placeholder='გრიშა' 
                         style={{borderColor: formik.errors.name ? "red" : "#4D9AC3"}}
                        { ...formik.getFieldProps('name')}
                         />
@@ -196,7 +196,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                     <div className='form-group col-6'>
                         <label htmlFor='surname' className='' style={{float: "left"}}>გვარი</label>     
                         <br />
-                        <input id='surname' className='form-control' type="text" name="surname" 
+                        <input id='surname' className='form-control' type="text" name="surname" placeholder='ბაგრატიონი'
                         style={{borderColor: formik.errors.surname ? "red" : "#4D9AC3"}}
 
                         { ...formik.getFieldProps('surname')}/>
@@ -255,7 +255,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                     <div className='form-group'>
                         <label className='mx-2 my-1' htmlFor="email" style={{float: "left"}}>მეილი</label>
                         <br />
-                        <input key="email" id='email' name='email' className='form-control' type="text" placeholder="Email" 
+                        <input key="email" id='email' name='email' className='form-control' type="text" placeholder="email@redberry.ge"
                         { ...formik.getFieldProps('email')}
                         style={{borderColor: formik.errors.email ? "red" : "#4D9AC3"}}
                         />
@@ -272,7 +272,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                     <div className='form-group'>
                         <label className="mx-2 my-1" htmlFor="phone_number" style={{float: "left"}}>ტელეფონის ნომერი</label>
                         <br />
-                        <input key="phone_number" id='phone_number' name="phone_number" className='form-control' refs="phone_number" type="text" placeholder="phone_number" 
+                        <input key="phone_number" id='phone_number' name="phone_number" className='form-control' refs="phone_number" type="text" placeholder="+995 123 123 123" 
                         { ...formik.getFieldProps('phone_number')}
                         style={{borderColor: formik.errors.phone_number ? "red" : "#4D9AC3"}}
                         />

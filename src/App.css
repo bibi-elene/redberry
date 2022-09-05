@@ -197,6 +197,21 @@ p {
 
 }
 
+.btn{
+transition: background-color 0.3s !important;
+}
+
+.btn:hover {
+  background-color: #317AD0 !important;
+}
+
+i:hover {
+  opacity: 0.4;
+}
+
+i {
+  transition: opacity 0.2s;
+}
 
 
 .error{
