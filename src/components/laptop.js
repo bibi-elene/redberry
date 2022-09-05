@@ -80,16 +80,16 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
         
     const initialValues = {
         laptop_image: '',
-        laptop_name: formData.laptop_name,
-        laptop_brand_id:  formData.laptop_brand_id,
-        laptop_cpu:  formData.laptop_cpu,
-        laptop_cpu_cores:  formData.laptop_cpu_cores,
-        laptop_cpu_threads:  formData.laptop_cpu_threads,
-        laptop_ram:  formData.laptop_ram,
-        laptop_hard_drive_type:  formData.laptop_hard_drive_type,
-        laptop_purchase_date:  formData.laptop_purchase_date,
-        laptop_price: formData.laptop_price,
-        laptop_state: formData.laptop_state
+        laptop_name: localStorage.getItem('laptop_name') !== undefined ? localStorage.getItem('laptop_name') : '',
+        laptop_brand_id: localStorage.getItem('laptop_brand_id') !== undefined ? localStorage.getItem('laptop_brand_id') : '',
+        laptop_cpu: localStorage.getItem('laptop_cpu') !== undefined ? localStorage.getItem('laptop_cpu') : '',
+        laptop_cpu_cores: localStorage.getItem('laptop_cpu_cores') !== undefined ? localStorage.getItem('laptop_cpu_cores') : '',
+        laptop_cpu_threads: localStorage.getItem('laptop_cpu_threads') !== undefined ? localStorage.getItem('laptop_cpu_threads') : '',
+        laptop_ram: localStorage.getItem('laptop_ram') !== undefined ? localStorage.getItem('laptop_ram') : '',
+        laptop_hard_drive_type: localStorage.getItem('laptop_hard_drive_type'),
+        laptop_purchase_date: localStorage.getItem('laptop_purchase_date') !== undefined ? localStorage.getItem('laptop_purchase_date') : '',
+        laptop_price: localStorage.getItem('laptop_price') !== undefined ? localStorage.getItem('laptop_price') : '',
+        laptop_state: localStorage.getItem('laptop_state')
     }
     
     window.onbeforeunload = () => {
@@ -175,6 +175,16 @@ if (brand) {
 }        
 
 const proceed = () => {   
+    localStorage.setItem('laptop_name', $('#laptop_name').val());
+    localStorage.setItem('laptop_brand_id', $("#laptop_brand_id").val());
+    localStorage.setItem('laptop_cpu', $("#laptop_cpu").val());
+    localStorage.setItem('laptop_cpu_cores', $('#laptop_cpu_cores').val());
+    localStorage.setItem('laptop_cpu_threads', $('#laptop_cpu_threads').val());
+    localStorage.setItem('laptop_ram', $("#laptop_ram").val());
+    localStorage.setItem('laptop_hard_drive_type', formData.laptop_hard_drive_type);
+    localStorage.setItem('laptop_purchase_date', $("#laptop_purchase_date").val());
+    localStorage.setItem('laptop_price', $("#laptop_price").val());
+    localStorage.setItem('laptop_state', formData.laptop_state);   
         setPage((currPage) => currPage - 1);
 }
 
@@ -216,7 +226,7 @@ function myFunction(){
     return (
             <>
             
-            <div className='row text-center justify-content-center' style={{fontSize: "12px"}}>
+            <div className='row laptop-container text-center justify-content-center' style={{fontSize: "12px"}}>
             
             <form onSubmit={formik.handleSubmit} style={{maxWidth: 900, minHeight: "100%"}}>
             <div className='row justify-content-center' style={{padding: "50px 70px 0 70px"}}>
@@ -474,7 +484,8 @@ function myFunction(){
                 id="conditionVal2" 
                 key="conditionVal2" 
                 value="used"
-                onChange={() => setFormData({...formData, laptop_state: "used"})} 
+                onChange={() => setFormData({...formData, laptop_state: "used"})
+                } 
                 defaultChecked
                  />
                 <label className="form-check-label" htmlFor="inlineRadio2">მეორადი</label>

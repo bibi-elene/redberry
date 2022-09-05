@@ -10,7 +10,7 @@ const Success = ({formData, setFormData}) => {
     return (
         <div style={{backgroundColor: "#4A4A4A", height: "150vh", overflow: "hidden", margin: -50}}>
     <div className='row text-center justify-content-center align-items-center'>      
-        <div style={{borderRadius: "8px", width: "700px", height: "auto", margin: "10%", padding: "50px",backgroundColor: "white"}} className="row ">
+        <div style={{borderRadius: "8px", width: "700px", height: "auto", margin: "10%", padding: "50px",backgroundColor: "white"}} className="row success-row ">
             <div className='row justify-content-center'>
             <img style={{width: "200px", height:"200px"}} className='' src={frame} alt="logo"></img>
             <h2 style={{fontSize: "22px", marginBottom: "30px"}}>ჩანაწერი დამატებულია!</h2>

@@ -49,7 +49,7 @@ const FileForm = () => {
 
     return (
     <>   
-        <div className='row mt-5 form text-center'>
+        <div className='row mt-5 form text-center d-none d-lg-flex d-md-flex'>
         {page == 0 ?
     <div className='row'>  
          <div className="row col-6 text-end justify-content-center">

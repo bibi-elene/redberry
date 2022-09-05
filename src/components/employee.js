@@ -83,12 +83,12 @@ const Employee = ({formData, setFormData, page, setPage}) => {
 
 
     const initialValues = {
-        name: formData.name,
-        surname: formData.surname,
-        team_id: formData.team_id,
-        position_id: formData.position_id,
-        email: formData.email,
-        phone_number: formData.phone_number
+        name: localStorage.getItem('name') != undefined ? localStorage.getItem('name') : '',
+        surname: localStorage.getItem('surname') !== undefined ? localStorage.getItem('surname') : '',
+        team_id: localStorage.getItem('team_id') !== undefined ? localStorage.getItem('team_id') : '',
+        position_id: localStorage.getItem('position_id') !== undefined ? localStorage.getItem('position_id') : '',
+        email: localStorage.getItem('email') !== undefined ? localStorage.getItem('email') : '',
+        phone_number: localStorage.getItem('phone_number') !== undefined ? localStorage.getItem('phone_number') : '',
     }
 
     window.onbeforeunload = () => {
@@ -113,6 +113,13 @@ const Employee = ({formData, setFormData, page, setPage}) => {
             position_id: selectedPositionId,
             email: values.email,
             phone_number: values.phone_number});
+
+            localStorage.setItem('name', $('#name').val());
+            localStorage.setItem('surname', $('#surname').val());
+            localStorage.setItem('team_id', $("#team_id").val());
+            localStorage.setItem('position_id', $("#position_id").val());
+            localStorage.setItem('email', $('#email').val());
+            localStorage.setItem('phone_number', $('#phone_number').val());
 
             setPage((currPage) => currPage + 1);   
     }
@@ -166,7 +173,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
     return (
         <>
         <Link to="/" className='position-absolute' style={{top:15, left: 20}}><i className="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
-        <div className='row  text-center justify-content-center' style={{fontSize: "12px"}}>
+        <div className='row employee-container  text-center justify-content-center' style={{fontSize: "12px"}}>
             <form onSubmit={formik.handleSubmit} style={{maxWidth: 900, minHeight: "100%"}}>
                 <div style={{padding: "50px 70px 10px 70px"}}>
                 <div className='row'>
