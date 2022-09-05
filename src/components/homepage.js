@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 const Homepage = () => {
 
     return (
-        <body style={{backgroundColor: "white", height: "100vh", overflow: "hidden"}}>
+        <div style={{backgroundColor: "white", height: "100vh", overflow: "hidden"}}>
         <div style={{backgroundColor: "white"}} className="container m-5 justify-content-center align-items-center">
             <div className=''>
             <img className='' width="auto" src={logo} alt="logo"></img>
@@ -40,7 +40,7 @@ const Homepage = () => {
             </div>
 
         </div>
-        </body>
+        </div>
     )
 
 

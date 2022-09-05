@@ -2,12 +2,14 @@ import React, {useState} from 'react';
 import Employee from './employee';
 import Laptop from './laptop';
 import Success from './success';
-import logo from '../LOGO-10 1.png'
+import logo from '../LOGO-10 1.png';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const FileForm = () => {
     const [page, setPage] = useState(0);
+    const navigate = useNavigate();
 
 
     const [formData, setFormData] = useState({
@@ -49,7 +51,7 @@ const FileForm = () => {
     <>   
         <div className='row mt-5 form text-center'>
         {page == 0 ?
-    <div className='row' >  
+    <div className='row'>  
          <div className="row col-6 text-end justify-content-center">
             <h2> თანამშრომლის ინფორმაცია </h2>
             <div>

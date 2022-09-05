@@ -83,12 +83,12 @@ const Employee = ({formData, setFormData, page, setPage}) => {
 
 
     const initialValues = {
-        name: localStorage.getItem('name') == 'undefined' ? '' : localStorage.getItem('name'),
-        surname: localStorage.getItem('surname') == 'undefined' ? '' : localStorage.getItem('surname'),
-        team_id: localStorage.getItem('team_id') == 'null' ? '' : localStorage.getItem('team_id'),
-        position_id: localStorage.getItem('position_id') == 'null' ? '' : localStorage.getItem('position_id'),
-        email: localStorage.getItem('email') == 'undefined' ? '' : localStorage.getItem('email'),
-        phone_number: localStorage.getItem('phone_number') == 'undefined' ? '' : localStorage.getItem('phone_number')
+        name: formData.name,
+        surname: formData.surname,
+        team_id: formData.team_id,
+        position_id: formData.position_id,
+        email: formData.email,
+        phone_number: formData.phone_number
     }
 
     window.onbeforeunload = () => {
@@ -101,6 +101,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
             localStorage.setItem('phone_number', $('#phone_number').val());
         
     }
+
 
 
     const onSubmit = (values) => {
