@@ -34,7 +34,7 @@ const Success = ({formData, setFormData}) => {
                 laptop_purchase_date: "",
                 laptop_price: "",
                 laptop_state: "",
-                token: ""})} to="/" className='col-12 m-2' style={{maxWidth: "300px", color: "#62A1EB", padding: "13px 35px"}}>უკან დაბრუნება</Link>
+                token: ""})} to="/redberry" className='col-12 m-2' style={{maxWidth: "300px", color: "#62A1EB", padding: "13px 35px"}}>უკან დაბრუნება</Link>
             </div>
             </div>  
     </div>
