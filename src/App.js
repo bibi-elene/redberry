@@ -22,7 +22,7 @@ function App() {
     <div className="App">
     <Router>
       <Routes>
-      <Route path='/' element={<Homepage />} />
+      <Route path='/redberry' element={<Homepage />} />
       <Route path='/form' element={<FileForm />} />
       <Route path='/employee' element={<Employee />} />
       <Route path='/laptop' element={<Laptop />} />
