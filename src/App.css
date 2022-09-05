@@ -35,6 +35,8 @@ form {
 
 }
 
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -83,6 +85,14 @@ input[type="file"] {
 
 input {
   border-color: #4D9AC3 !important
+}
+*/
+
+i {
+  color: green !important;
+  font-size: "14px" !important;
+  margin: "10px" !important;
+  color: "#BED918" !important;
 }
 
 .file-form {

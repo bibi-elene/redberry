@@ -25,10 +25,10 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     let values = useParams();
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState(false);
     const my_token = '02d26493adc8273c9e598948b8e434f8';
     const url = 'https://pcfy.redberryinternship.ge/api/laptop/create';
-    const regex = (/^[A-Za-z0-9!@#$%^&*()_+=]+$/);
+    const regex = /^[A-Za-z0-9!@#$%^&*()_+=]+$/;
   
 
     const fetchBrands = () => {
@@ -149,9 +149,13 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
             }
 
     const validationSchema = Yup.object ({
+        laptop_name: Yup.string().matches(regex).required("Please select a product"),
         laptop_brand_id: Yup.string().required("Please select a product"),
-
-
+        laptop_cpu: Yup.string().required("Please select a product"),
+        laptop_cpu_cores: Yup.string().required("Please select a product"),
+        laptop_cpu_threads: Yup.string().required("Please select a product"),
+        laptop_ram: Yup.string().required("Please select a product"),
+        laptop_price: Yup.string().required("Please select a product"),
 
     })
 
@@ -160,8 +164,6 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
         onSubmit, 
         validationSchema
     })
-
-
 
 
   var selectBrand = document.getElementById('laptop_brand_id');
@@ -176,6 +178,36 @@ const proceed = () => {
         setPage((currPage) => currPage - 1);
 }
 
+function myFunction(){
+    var x = document.getElementById("laptop_image");
+    var txt = "";
+    if ('files' in x) {
+      if (x.files.length == 0) {
+        txt = "Select one or more files.";
+      } else {
+        for (var i = 0; i < x.files.length; i++) {
+          var file = x.files[i];
+          if ('name' in file) {
+            txt += file.name;
+          }
+          if ('size' in file) {
+            txt += "size: " + file.size + " bytes";
+          }
+        }
+      }
+    } 
+    else {
+      if (x.value == "") {
+        txt += "Select one or more files.";
+      } else {
+        txt += "The files property is not supported by your browser!";
+        txt  += "<br>The path of the selected file: " + x.value; 
+      }
+    }
+
+    document.getElementById("file-display").innerHTML = '' + '  ' + txt;
+
+}
 
     if (loading) return ("Loading ...")
     if (error) return "Error: "
@@ -189,7 +221,7 @@ const proceed = () => {
             <form onSubmit={formik.handleSubmit} style={{maxWidth: 900, minHeight: "100%"}}>
             <div className='row justify-content-center' style={{padding: "50px 70px 0 70px"}}>
             
-            <div className='row align-content-center file-form mb-5' style={{minHeight: 150, maxHeight: 300, maxWidth: 700}}>
+            <div className='row align-content-center file-form mb-2' style={{minHeight: 150, maxHeight: 300, maxWidth: 700}}>
             <label htmlFor="laptop_image" style={{fontSize: "15px", fontWeight: "900", color: "#4386A9", padding: "15px", fontWeight: "500"}}>ჩააგდე ან ატვირტე <br /> ლეპტოპის ფოტო <br/></label>
             <label htmlFor='laptop_image'><a className='mt-4 btn btn-info' style={{color: "white", padding: "8px 40px", backgroundColor: "#62A1EB"}}>ატვირთე </a></label>
             <input key="laptop_image"
@@ -198,15 +230,13 @@ const proceed = () => {
             name="laptop_image"
             accept="image/png, image/jpeg"
             {...formik.getFieldProps('laptop_image')}
-            required
             />
-            {formik.touched.laptop_image && formik.errors.laptop_image
-            ?
-            <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.laptop_image}</small>
-            :
-            <small className="form-text text-muted" style={{float: "left"}}>
-            </small>
-            }
+            
+            </div>
+            <div className="row mb-5">
+            <p id="file-display" className="text-start">{
+                document.getElementById('laptop_image') && document.getElementById('laptop_image').files[0] ? document.getElementById('laptop_image').files[0].name : null
+            }</p> 
             </div>
             
             <div className='row'>
@@ -215,6 +245,7 @@ const proceed = () => {
             <br />
             <input key="laptop_name" id='laptop_name' className='form-control' type="text" name="laptop_name"
             {...formik.getFieldProps('laptop_name')}
+            style={{borderColor: formik.errors.laptop_name ? "red" : "#4D9AC3"}}
             />
             {formik.touched.laptop_name && formik.errors.laptop_name
             ?
@@ -225,9 +256,9 @@ const proceed = () => {
             </div>
             
             <div className='form-group col-6' style={{marginTop: "18px"}}>
-            <select key="laptop_brand_id" id="laptop_brand_id" name='laptop_brand_id' className='form-control' required
+            <select key="laptop_brand_id" id="laptop_brand_id" name='laptop_brand_id' className='form-control'
             {...formik.getFieldProps('laptop_brand_id')}
-            style={{backgroundColor: "#EBEBEB", padding: "8px 24px"}}
+            style={{backgroundColor: "#EBEBEB", padding: "8px 24px", borderColor: formik.errors.laptop_brand_id ? "red" : "#4D9AC3"}}
             >
             <option value="" disabled hidden>ლეპტოპის ბრენდი</option>
             {brand && brand.map(({id, name}) => (
@@ -239,8 +270,7 @@ const proceed = () => {
             ?
             <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.laptop_brand_id}</small>
             :
-            <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
-            }
+            null}
             
             </div>
             </div>
@@ -248,7 +278,7 @@ const proceed = () => {
             <div className='row my-4'>
             <div className='form-group col-4' style={{marginTop: "34px"}}>
             <select key="laptop_cpu" id="laptop_cpu" name='laptop_cpu' className='form-control'
-            style={{backgroundColor: "#EBEBEB", padding: "8px 24px"}}
+            style={{backgroundColor: "#EBEBEB", padding: "8px 24px", borderColor: formik.errors.laptop_cpu ? "red" : "#4D9AC3"}}
             {...formik.getFieldProps('laptop_cpu')}
             >
             <option value="" disabled hidden>CPU</option>
@@ -261,7 +291,7 @@ const proceed = () => {
             ?
             <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.cpu}</small>
             :
-            <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
+            null            
             }
             </div>
             
@@ -274,12 +304,13 @@ const proceed = () => {
             name="laptop_cpu_cores"
             key="laptop_cpu_cores"
             {...formik.getFieldProps('laptop_cpu_cores')}
+            style={{borderColor: formik.errors.laptop_cpu_cores ? "red" : "#4D9AC3"}}
             />
             {formik.touched.laptop_cpu_cores && formik.errors.laptop_cpu_cores
             ?
             <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.laptop_cpu_cores}</small>
             :
-            <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
+            <small className="form-text text-muted" style={{float: "left"}}>მხოლოდ ციფრები</small>
             }
             </div>
             
@@ -287,12 +318,13 @@ const proceed = () => {
             <label htmlFor='laptop_cpu_threads' className='pb-3' style={{float: "left"}}>CPU-ს ნაკადი</label>
             <input className='form-control' type="number" key="laptop_cpu_threads" id="laptop_cpu_threads" name="laptop_cpu_threads"
             {...formik.getFieldProps('laptop_cpu_threads')}
+            style={{borderColor: formik.errors.laptop_cpu_threads ? "red" : "#4D9AC3"}}
             />
             {formik.touched.laptop_cpu_threads && formik.errors.laptop_cpu_threads
             ?
             <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.laptop_cpu_threads}</small>
             :
-            <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
+            <small className="form-text text-muted" style={{float: "left"}}>მხოლოდ ციფრები</small>
             }
             
             </div>
@@ -304,12 +336,13 @@ const proceed = () => {
             <label htmlFor='laptop_ram' className='pb-3' style={{float: "left"}}>ლეპტოპის laptop_ram (GB)</label>
             <input className='form-control' type="number" name="laptop_ram" key="laptop_ram" id="laptop_ram"
             {...formik.getFieldProps('laptop_ram')}
+            style={{borderColor: formik.errors.laptop_ram ? "red" : "#4D9AC3"}}
             />
             {formik.touched.laptop_ram && formik.errors.laptop_ram
             ?
             <small className="form-text text-muted error" style={{float: "left"}}>{formik.errors.laptop_ram}</small>
             :
-            <small className="form-text text-muted" style={{float: "left"}}>მინიმუმ 2 სიმბოლო, ქართული ასოები</small>
+            <small className="form-text text-muted" style={{float: "left"}}>მხოლოდ ციფრები</small>
             }
             
             </div>
@@ -379,6 +412,7 @@ const proceed = () => {
             key="laptop_price"
             id="laptop_price"
             {...formik.getFieldProps('laptop_price')}
+            style={{borderColor: formik.errors.laptop_price ? "red" : "#4D9AC3"}}
             />
             {formik.touched.laptop_price && formik.errors.laptop_price
             ?

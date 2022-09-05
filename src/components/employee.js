@@ -175,6 +175,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                         <label htmlFor='name' className='' style={{float: "left"}}>სახელი</label>
                         <br />
                         <input id='name' key='name' className='form-control' type="text" name="name" 
+                        style={{borderColor: formik.errors.name ? "red" : "#4D9AC3"}}
                        { ...formik.getFieldProps('name')}
                         />
                         {formik.touched.name && formik.errors.name 
@@ -189,6 +190,8 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                         <label htmlFor='surname' className='' style={{float: "left"}}>გვარი</label>     
                         <br />
                         <input id='surname' className='form-control' type="text" name="surname" 
+                        style={{borderColor: formik.errors.surname ? "red" : "#4D9AC3"}}
+
                         { ...formik.getFieldProps('surname')}/>
                         {formik.touched.surname && formik.errors.surname 
                         ? 
@@ -203,7 +206,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                     <div className='row justify-content-center my-5'>
                         <div className='form-group teams-div'>
                             <select id='team_id' className='form-control' name='team_id' 
-                            style={{backgroundColor: "#EBEBEB", borderRadius: "8px", padding: "8px 24px", fontWeight: "700"}}
+                            style={{backgroundColor: "#EBEBEB", borderRadius: "8px", padding: "8px 24px", fontWeight: "700", borderColor: formik.errors.team_id ? "red" : "#4D9AC3"}}
                             { ...formik.getFieldProps('team_id')}>
                                 <option value="" disabled hidden>თიმი</option>
                                 {teams && teams.map(({id, name}) => (
@@ -222,7 +225,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                 <div className='row justify-content-center my-4'>
                     <div className='form-group'>
                         <select id='position_id' className='form-control' name='position_id' 
-                        style={{backgroundColor: "#EBEBEB", borderRadius: "8px", padding: "8px 24px", fontWeight: "700"}}
+                        style={{backgroundColor: "#EBEBEB", borderRadius: "8px", padding: "8px 24px", fontWeight: "700", borderColor: formik.errors.position_id ? "red" : "#4D9AC3"}}
                         { ...formik.getFieldProps('position_id')}>
                             <option value="" disabled hidden>პოზიცია</option>
                             {positions && positions.map(({id, name, team_id}) => (
@@ -247,6 +250,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                         <br />
                         <input key="email" id='email' name='email' className='form-control' type="text" placeholder="Email" 
                         { ...formik.getFieldProps('email')}
+                        style={{borderColor: formik.errors.email ? "red" : "#4D9AC3"}}
                         />
                                 {formik.touched.email && formik.errors.email 
                                 ?
@@ -263,6 +267,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                         <br />
                         <input key="phone_number" id='phone_number' name="phone_number" className='form-control' refs="phone_number" type="text" placeholder="phone_number" 
                         { ...formik.getFieldProps('phone_number')}
+                        style={{borderColor: formik.errors.phone_number ? "red" : "#4D9AC3"}}
                         />
                             {formik.touched.phone_number && formik.errors.phone_number 
                             ?
