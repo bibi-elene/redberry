@@ -78,17 +78,14 @@ const Employee = ({formData, setFormData, page, setPage}) => {
 
     // Store items locally to avoid  
     // Losing data on Refresh
-    
-
-
 
     const initialValues = {
-        name: localStorage.getItem('name') ? localStorage.getItem('name') : '',
-        surname: localStorage.getItem('surname') ? localStorage.getItem('surname') : '',
-        team_id: localStorage.getItem('team_id') ? localStorage.getItem('team_id') : '',
-        position_id: localStorage.getItem('position_id') ? localStorage.getItem('position_id') : '',
-        email: localStorage.getItem('email') ? localStorage.getItem('email') : '',
-        phone_number: localStorage.getItem('phone_number') ? localStorage.getItem('phone_number') : '',
+        name: localStorage.getItem('name') !== 'undefined' ? localStorage.getItem('name') : '',
+        surname: localStorage.getItem('surname') !== 'undefined' ? localStorage.getItem('surname') : '',
+        team_id: localStorage.getItem('team_id') !== 'undefined' ? localStorage.getItem('team_id') : '',
+        position_id: localStorage.getItem('position_id') !== 'undefined' ? localStorage.getItem('position_id') : '',
+        email: localStorage.getItem('email') !== 'undefined' ? localStorage.getItem('email') : '',
+        phone_number: localStorage.getItem('phone_number') !== 'undefined' ? localStorage.getItem('phone_number') : '',
     }
 
     window.onbeforeunload = () => {
@@ -160,12 +157,10 @@ const Employee = ({formData, setFormData, page, setPage}) => {
     
             if (selectTeam.options[selectTeam.selectedIndex]) {
             var selectedTeamId = selectTeam.options[selectTeam.selectedIndex].id;
-            var selectedTeamValue = selectTeam.options[selectTeam.selectedIndex].value;
             }
             
             if (selectPosition.options[selectPosition.selectedIndex]) {
             var selectedPositionId = selectPosition.options[selectPosition.selectedIndex].id;
-            var selectedPositionValue = selectPosition.options[selectPosition.selectedIndex].value;
             }     
         }  
     

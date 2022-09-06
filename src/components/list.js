@@ -44,9 +44,9 @@ const List = () => {
             <Link to="/redberry" className='position-absolute' style={{top:15, left: 20}}><i className="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
             <div className='row page-container justify-content-center m-5'>
                 {
-                    data && data.map(({laptop, user, id, name, image, surname}) => (
+                    data && data.map(({laptop, user, id, image, surname}) => (
                         
-                <div id={name} className="row list-container align-items-center" style={{backgroundColor: "#EAFAFF", margin: "30px", borderRadius: "20px", padding: "10px"}}>
+                <div key={laptop.id} className="row list-container align-items-center" style={{backgroundColor: "#EAFAFF", margin: "30px", borderRadius: "20px", padding: "10px"}}>
                     <div className='col-6'>
                     <img style={{float: "left", borderRadius: "10px", marginRight: "40px", maxWidth: "100%", maxHeight: "100%", padding: "10px"}} width="auto" height="auto" src={`https://pcfy.redberryinternship.ge/${laptop.image}`} alt="img"></img>
                     </div>

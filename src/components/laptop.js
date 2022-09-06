@@ -80,15 +80,15 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
         
     const initialValues = {
         laptop_image: '',
-        laptop_name: localStorage.getItem('laptop_name') ? localStorage.getItem('laptop_name') : '',
-        laptop_brand_id: localStorage.getItem('laptop_brand_id') ? localStorage.getItem('laptop_brand_id') : '',
-        laptop_cpu: localStorage.getItem('laptop_cpu') ? localStorage.getItem('laptop_cpu') : '',
-        laptop_cpu_cores: localStorage.getItem('laptop_cpu_cores') ? localStorage.getItem('laptop_cpu_cores') : '',
-        laptop_cpu_threads: localStorage.getItem('laptop_cpu_threads') ? localStorage.getItem('laptop_cpu_threads') : '',
-        laptop_ram: localStorage.getItem('laptop_ram') ? localStorage.getItem('laptop_ram') : '',
+        laptop_name: localStorage.getItem('laptop_name') !== "undefined" ? localStorage.getItem('laptop_name') : '',
+        laptop_brand_id: localStorage.getItem('laptop_brand_id') !== "undefined" ? localStorage.getItem('laptop_brand_id') : '',
+        laptop_cpu: localStorage.getItem('laptop_cpu') !== "undefined" ? localStorage.getItem('laptop_cpu') : '',
+        laptop_cpu_cores: localStorage.getItem('laptop_cpu_cores') !== "undefined" ? localStorage.getItem('laptop_cpu_cores') : '',
+        laptop_cpu_threads: localStorage.getItem('laptop_cpu_threads') !== "undefined" ? localStorage.getItem('laptop_cpu_threads') : '',
+        laptop_ram: localStorage.getItem('laptop_ram') !== "undefined" ? localStorage.getItem('laptop_ram') : '',
         laptop_hard_drive_type: localStorage.getItem('laptop_hard_drive_type'),
-        laptop_purchase_date: localStorage.getItem('laptop_purchase_date') ? localStorage.getItem('laptop_purchase_date') : '',
-        laptop_price: localStorage.getItem('laptop_price') ? localStorage.getItem('laptop_price') : '',
+        laptop_purchase_date: localStorage.getItem('laptop_purchase_date') !== "undefined" ? localStorage.getItem('laptop_purchase_date') : '',
+        laptop_price: localStorage.getItem('laptop_price') !== "undefined" ? localStorage.getItem('laptop_price') : '',
         laptop_state: localStorage.getItem('laptop_state')
     }
     
@@ -144,6 +144,7 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
                 })
                 .catch(error => console.error(error), console.log("error fetching"))
 
+                localStorage.clear()
                 setPage((currPage) => currPage + 1);
 
             }
