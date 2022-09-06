@@ -129,7 +129,7 @@ span {
   }
 
   .details {
-    width: 40%;
+    width: 45%;
   }
 
 }
@@ -144,6 +144,15 @@ span {
     .details-container .text-start {
       padding: 0 !important;
       margin: 0 !important;
+    }
+
+    .details-container span, .details-container p {
+      font-size: 10px;
+    }
+
+    .details-container img {
+      width: 100%;
+      max-height: 200px;
     }
 
     .details-container .row {

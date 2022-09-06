@@ -13,8 +13,74 @@ const Details = () => {
     const [details, setDetails] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    let {id} = useParams();
-    const detailsUrl = `https://pcfy.redberryinternship.ge/api/laptop/${id}?token=02d26493adc8273c9e598948b8e434f8`
+    const [teams, setTeams] = useState(null);
+    const [brand, setBrand] = useState(null);
+    const [positions, setPositions] = useState(null);
+    const {id} = useParams();
+    const teamUrl = 'https://pcfy.redberryinternship.ge/api/teams';
+    const positionUrl = 'https://pcfy.redberryinternship.ge/api/positions';
+    const brandUrl = 'https://pcfy.redberryinternship.ge/api/brands';
+    const detailsUrl = `https://pcfy.redberryinternship.ge/api/laptop/${id}?token=02d26493adc8273c9e598948b8e434f8`;
+
+    useEffect(() => {
+        fetch(teamUrl)
+        .then((res) => {
+           if (res.ok){ 
+            return res.json();
+           }
+           throw res;
+        })
+        .then((data) => {
+           setTeams(data.data);
+        })
+        .catch((error) =>{
+            console.error("error fetching data", error);
+            setError(error);
+        })
+        .finally(()=>{
+            setLoading(false);
+        })
+
+    }, []);
+
+    useEffect(() => {
+        fetch(positionUrl)
+        .then((res) => {
+           if (res.ok){ 
+            return res.json();
+           }
+           throw res;
+        })
+        .then((data) => {
+           setPositions(data.data);
+        })
+        .catch((error) =>{
+            console.error("error fetching data", error);
+            setError(error);
+        })
+        .finally(()=>{
+            setLoading(false);
+        })
+    }, [])
+
+    useEffect(() => {
+        fetch(brandUrl)
+        .then((res) => {
+            if(res.ok){  
+                return res.json();
+            }
+        })
+        .then((data) => {
+            setBrand(data.data);
+        })
+        .catch((error) => {
+            console.error('Error loading data', error);
+            setError(error)
+        }) 
+        .finally(() => {
+            setLoading(false);
+        })
+    }, [])
 
 
     useEffect(() => {
@@ -42,18 +108,18 @@ if (details) {
     return (
 <>           
 <Link to="/redberry/list" className='position-absolute' style={{top:20, left: 40}}><i className="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
-<h1 className='m-5'> ლეპტოპის ინფო </h1>
+<h1 className='m-5' style={{fontWeight: 700, fontSize: "2em"}}> ლეპტოპის ინფო </h1>
         <div className='container details-container text-center justify-content-between align-items-center'>
             {
             details.map(({user, laptop}) => (
                 <div key={id} className="row justify-content-center text-center " style={{margin: "30px", borderRadius: "20px", }}>
                     <div className='row'>
 
-                    <div className='user user-image mt-4'> 
+                    <div className='user user-image mt-3'> 
                     <img style={{borderRadius: "10px", maxWidth: "100%"}} width="auto" height="auto" src={`https://pcfy.redberryinternship.ge/${laptop.image}`} alt="img"></img>
                     </div>
 
-                    <div className="user details align-items-center mt-4" style={{fontWeight: "700"}}>
+                    <div className="user details mt-4" style={{fontWeight: "700"}}>
                         <div className='text-start px-5'> 
                     <p> სახელი: </p>
                     <p> თიმი: </p>
@@ -63,11 +129,16 @@ if (details) {
                     </div>
                     </div>
 
-                    <div className="user details align-items-center mt-4" style={{fontWeight: "700"}}>
+                    <div className="user details mt-4" style={{fontWeight: "700"}}>
                         <div className='text-start'> 
                     <p> <span>{user.name} {user.surname}</span></p>
-                    <p> <span>{user.team_id}</span></p>
-                    <p> <span>{user.position_id}</span></p>
+                    {teams && teams.map(({id, name}) => (
+                    <p key={id}> <span>{id == user.team_id ? name : null}</span></p>
+                    ))}
+                    {positions && positions.map(({id, name}) => (
+                        <p key={id}> <span>{id == user.position_id ? name : null}</span></p>
+                    ))}
+                    
                     <p> <span>{user.email}</span></p>                    
                     <p> <span>{user.phone_number}</span></p>
                     </div>
@@ -91,7 +162,9 @@ if (details) {
                     <div className="laptop align-items-center mt-4" style={{fontWeight: "700"}}>
                         <div className='text-start px-5'> 
                     <p> <span>{laptop.name}</span></p>
-                    <p> <span>{laptop.brand_id}</span></p>
+                    {brand && brand.map(({id, name}) => (
+                    <p key={id}> <span>{id == laptop.brand_id ? name : null}</span></p>
+                    ))}                    
                     <p> <span>{laptop.ram}</span></p>                    
                     <p> <span>{laptop.hard_drive_type}</span></p>
                     </div>
