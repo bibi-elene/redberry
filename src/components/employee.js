@@ -157,7 +157,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
 
     return (
         <>
-        <Link to="/redberry" className='position-absolute' style={{top:15, left: 20}}><i className="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
+        <Link to="/" className='position-absolute' style={{top:15, left: 20}}><i className="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
         <div className='row employee-container  text-center justify-content-center' style={{fontSize: "12px"}}>
             <form id="employee-form" onSubmit={formik.handleSubmit} style={{maxWidth: 900, minHeight: "100%"}}>
                 <div style={{padding: "50px 70px 10px 70px"}}>

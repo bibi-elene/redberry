@@ -104,7 +104,7 @@ const Details = () => {
 if (details) {
     return (
 <>           
-<Link to="/redberry/list" className='position-absolute' style={{top:20, left: 40}}><i className="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
+<Link to="/list" className='position-absolute' style={{top:20, left: 40}}><i className="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
 <h1 className='m-5' style={{fontWeight: 700, fontSize: "2em"}}> ლეპტოპის ინფო </h1>
         <div className='container details-container text-center justify-content-between align-items-center'>
             {

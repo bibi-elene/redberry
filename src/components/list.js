@@ -41,7 +41,7 @@ const List = () => {
     return (
         <div>
             <h1 className='mt-5'> ჩანაწერის სია </h1>
-            <Link to="/redberry" className='position-absolute' style={{top:15, left: 20}}><i className="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
+            <Link to="/" className='position-absolute' style={{top:15, left: 20}}><i className="bi bi-arrow-left-circle" style={{color: "black"}}></i></Link>
             <div className='row page-container justify-content-center m-5'>
                 {
                     data && data.map(({laptop, user, id, image, surname}) => (
