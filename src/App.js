@@ -7,8 +7,6 @@ import Employee from './components/employee';
 import List from './components/list'
 import Details from './components/details'
 
-
-import logo from './logo.png';
 import {
   BrowserRouter as Router,
   Switch,

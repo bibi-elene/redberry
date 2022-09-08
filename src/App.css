@@ -141,6 +141,12 @@ span {
 }
 
 @media only screen and (max-width: 400px) {
+
+    .list-container {
+      width: auto !important;
+      height: auto;
+    }
+
     .details-container .text-start {
       padding: 0 !important;
       margin: 0 !important;
@@ -193,18 +199,9 @@ span {
 }
 
 
-
 p {
   font-weight: 500;
   color: #2E2E2E;
-}
-
-@media only screen and (max-width: 900px)  {
-  .list-container {
-    width: auto;
-    height: auto;
-  }
-
 }
 
 .btn{
