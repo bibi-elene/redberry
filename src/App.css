@@ -157,6 +157,7 @@ span {
 
     .details-container .row {
       margin: 0 !important;
+      padding: 0 !important;
     }
 
     .success-row {
@@ -165,7 +166,7 @@ span {
     }
 
     .homepage .btn {
-      width: 280px !important;
+      width: 260px !important;
       height: 50px;
       font-size: 13px !important;
     }
@@ -188,6 +189,7 @@ span {
       width: 100%;
     }
 
+   
 }
 
 

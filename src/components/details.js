@@ -1,13 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import '../App.css';
-import Form from './form'
 import {Link} from "react-router-dom";
-import { useFormik } from 'formik';
-import { validate} from 'graphql';
-import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import $ from 'jquery';
-import axios from 'axios';
 
 const Details = () => {
     const [details, setDetails] = useState([]);
@@ -101,7 +95,10 @@ const Details = () => {
             setLoading(false);
         })
         
-},[id]);
+},[detailsUrl]);
+
+        if (loading) return "Loading ..."
+        if (error) return "Error: "
 
 
 if (details) {
@@ -190,7 +187,7 @@ if (details) {
                     <hr className='mt-5'/>
                     
                     <div className='row'>
-                    <div className="laptop details align-items-center mt-4" style={{fontWeight: "700"}}>
+                    <div className="laptop details 3 align-items-center mt-4" style={{fontWeight: "700"}}>
                         <div className='text-start'> 
                         <p> ლეპტოპის მდგომარეობა: </p>                    
                         <p> ლეპტოპის ფასი: </p>
@@ -206,17 +203,12 @@ if (details) {
 
                     <div className="laptop details align-items-center mt-4" style={{fontWeight: "700"}}>
                         <div className='text-start px-5'>               
-                    <p> შეძენის რიცხვი: </p>
-                    </div>
-                    </div>
-
-                    <div className="laptop details align-items-center mt-4" style={{fontWeight: "700"}}>
-                        <div className='text-start'>                
-                    <p> <span>{laptop.purchase_date}</span></p>
-                    </div>
-                    </div>
+                    <p> შეძენის რიცხვი: <span className='ml-5'>{laptop.purchase_date}</span></p>
                     </div>
                 </div>
+         
+                </div>
+            </div>
                 ))
             }
         </div>

@@ -1,12 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import '../App.css';
-import FileForm from './form'
-import {Link} from "react-router-dom";
-import { useFormik, ErrorMessage } from 'formik';
-import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useFormik } from 'formik';
 import $ from 'jquery';
-import axios from 'axios';
 import * as Yup from 'yup';
 
 
@@ -21,14 +16,11 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
     const cpuUrl = 'https://pcfy.redberryinternship.ge/api/cpus'
     let [brand, setBrand] = useState(null);
     let [cpu, setCpu] = useState(null);
-    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    let values = useParams();
-    const [image, setImage] = useState(false);
     const my_token = '02d26493adc8273c9e598948b8e434f8';
     const url = 'https://pcfy.redberryinternship.ge/api/laptop/create';
-    const regex = /^[A-Za-z0-9!@#$%^&*()_+=]+$/;
+    const regex = /^[A-Za-z0-9!@#$%^&*()_+=\s+]+$/;
   
 
     const fetchBrands = () => {
@@ -144,7 +136,7 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
                 })
                 .catch(error => console.error(error), console.log("error fetching"))
 
-                localStorage.clear()
+                localStorage.clear();
                 setPage((currPage) => currPage + 1);
 
             }
@@ -205,7 +197,7 @@ const proceed = () => {
             <div className='row justify-content-center' style={{padding: "50px 70px 0 70px"}}>
             
             <div className='row align-content-center file-form mb-2' style={{minHeight: 150, maxHeight: 300, maxWidth: 700}}>
-            <label htmlFor="laptop_image" style={{fontSize: "15px", fontWeight: "900", color: "#4386A9", padding: "15px", fontWeight: "500"}}>ჩააგდე ან ატვირტე <br /> ლეპტოპის ფოტო <br/></label>
+            <label htmlFor="laptop_image" style={{fontSize: "15px", color: "#4386A9", padding: "15px", fontWeight: "500"}}>ჩააგდე ან ატვირტე <br /> ლეპტოპის ფოტო <br/></label>
             <label htmlFor='laptop_image'><a className='mt-4 btn btn-info' style={{color: "white", padding: "8px 40px", backgroundColor: "#62A1EB"}}>ატვირთე </a></label>
             <input key="laptop_image"
             type="file"
@@ -317,7 +309,7 @@ const proceed = () => {
             
             <div className='row'>
             <div className='form-group col-6 my-3'>
-            <label htmlFor='laptop_ram' className='pb-3' style={{float: "left"}}>ლეპტოპის laptop_ram (GB)</label>
+            <label htmlFor='laptop_ram' className='pb-3' style={{float: "left"}}>ლეპტოპის RAM (GB)</label>
             <input className='form-control' type="number" name="laptop_ram" key="laptop_ram" id="laptop_ram" placeholder='16'
             {...formik.getFieldProps('laptop_ram')}
             style={{borderColor: formik.errors.laptop_ram ? "red" : "#4D9AC3"}}
@@ -409,7 +401,7 @@ const proceed = () => {
             </div>
             </div>
             
-            {formData.laptop_state == "new" ?
+            {formData.laptop_state === "new" ?
         <div className="row justify-content-start text-start">
             <div className='form-group col-6 my-3'>
                 <label htmlFor='laptop_state' className='pb-4'>ლეპტოპის მდგომარეობა</label>
@@ -437,7 +429,7 @@ const proceed = () => {
                 </div>
             </div>
         </div>
-        : formData.laptop_state == "used" ?
+        : formData.laptop_state === "used" ?
         <div className="row justify-content-start text-start">
             <div className='form-group col-6 my-3'>
                 <label htmlFor='laptop_state' className='pb-4'>ლეპტოპის მდგომარეობა</label>
@@ -500,15 +492,15 @@ const proceed = () => {
 
             <div className="footer text-center align-items-end ">
             
-            <a
-            className='m-5'
-            style={{color: "#62A1EB", float: "left"}}
-            disabled={page == 0}
+            <button
+            className='m-5 border-0'
+            style={{color: "#62A1EB", float: "left", background: "white",}}
+            disabled={page === 0}
             onClick={() => {
             proceed();
             }}>
             ეკან
-            </a>
+            </button>
             <button
             type='submit'
             className={page !== FormTitles.length - 1 ? 'btn btn-info m-4' : 'd-none'}

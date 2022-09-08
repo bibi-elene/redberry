@@ -1,17 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom'
 import {Link} from 'react-router-dom';
-import { useFormik, ErrorMessage } from 'formik';
-import { validate } from 'graphql';
-import Form from './form'
+import { useFormik } from 'formik';
 import $ from 'jquery';
-import { findAllInRenderedTree } from 'react-dom/test-utils';
-import Laptop from './laptop';
-import { values } from 'lodash';
 import * as Yup from 'yup';
-import logo from '../LOGO-10 1.png'
-
 
 const Employee = ({formData, setFormData, page, setPage}) => {
 
@@ -22,7 +13,6 @@ const Employee = ({formData, setFormData, page, setPage}) => {
     const [positions, setPositions] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    let navigate = useNavigate();
 
     let fetchTeams = () => {
         fetch(teamUrl)
@@ -151,7 +141,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
  // Current ID of selected Team
  // For filtering the positions options
         if (teams){
-            if (teams == undefined) {return 'error fetching data'}
+            if (teams === undefined) {return 'error fetching data'}
             var selectTeam = document.getElementById('team_id');
             var selectPosition = document.getElementById('position_id');
     
@@ -174,7 +164,7 @@ const Employee = ({formData, setFormData, page, setPage}) => {
                 <div className='row'>
 
                 <div className='form-group col-6'>
-                        <label htmlFor='name' className='' style={{float: "left"}}>სახელი</label>
+                        <label htmlFor='name' style={{float: "left"}}>სახელი</label>
                         <br />
                         <input id='name' key='name' className='form-control' type="text" name="name" placeholder='გრიშა' 
                         style={{borderColor: formik.errors.name ? "red" : "#4D9AC3"}}
