@@ -21,6 +21,7 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
     const my_token = '02d26493adc8273c9e598948b8e434f8';
     const url = 'https://pcfy.redberryinternship.ge/api/laptop/create';
     const regex = /^[A-Za-z0-9!@#$%^&*()_+=\s+]+$/;
+    const FILE_SIZE = 20000;
   
 
     const fetchBrands = () => {
@@ -142,9 +143,7 @@ const Laptop = ({formData, setFormData, page, setPage}) => {
             }
 
     const validationSchema = Yup.object ({
-        laptop_image: Yup.mixed()
-        .nullable()
-        .required("ატვირთეთ სურათი"),
+        laptop_image: Yup.mixed().required('გთხოვთ ატვირთოთ სურათი'),
         laptop_name: Yup.string().matches(regex).required("Please select a product"),
         laptop_brand_id: Yup.string().required("Please select a product"),
         laptop_cpu: Yup.string().required("Please select a product"),
@@ -168,7 +167,7 @@ if (brand) {
   if (selectBrand.options[selectBrand.selectedIndex]) {
     var selectedBrand = selectBrand.options[selectBrand.selectedIndex].id;
     }
-}        
+}       
 
 const proceed = () => {   
         localStorage.setItem('laptop_name', $('#laptop_name').val());
@@ -196,7 +195,7 @@ const proceed = () => {
             <form id="laptop-form" onSubmit={formik.handleSubmit} style={{maxWidth: 900, minHeight: "100%"}}>
             <div className='row justify-content-center' style={{padding: "50px 70px 0 70px"}}>
             
-            <div className='row align-content-center file-form mb-2' style={{minHeight: 150, maxHeight: 300, maxWidth: 700}}>
+            <div id="file-form" className='row align-content-center file-form mb-2' style={{minHeight: 150, maxHeight: 300, maxWidth: 700, backgroundColor: document.getElementById('laptop_image') && document.getElementById('laptop_image').files[0] ? "#F6F6F6" : "#FFF1F1", borderColor: document.getElementById('laptop_image') && document.getElementById('laptop_image').files[0] ? "#4386A9" : "red"}}>
             <label htmlFor="laptop_image" style={{fontSize: "15px", color: "#4386A9", padding: "15px", fontWeight: "500"}}>ჩააგდე ან ატვირტე <br /> ლეპტოპის ფოტო <br/></label>
             <label htmlFor='laptop_image'><a className='mt-4 btn btn-info' style={{color: "white", padding: "8px 40px", backgroundColor: "#62A1EB"}}>ატვირთე </a></label>
             <input key="laptop_image"
@@ -209,9 +208,13 @@ const proceed = () => {
             
             </div>
             <div className="row mb-5">
-            <p id="file-display" className="text-start">{
-                document.getElementById('laptop_image') && document.getElementById('laptop_image').files[0] ? document.getElementById('laptop_image').files[0].name : null
-            }</p> 
+            {
+                document.getElementById('laptop_image') && document.getElementById('laptop_image').files[0] ? 
+                <div className="text-start">
+                <i class="bi bi-check-circle-fill" style={{color: "#BED918", fontSize: "12px", padding: "0 8px 0 4px"}}></i>
+                {document.getElementById('laptop_image').files[0].name + ', ' + Math.round(document.getElementById('laptop_image').files[0].size / 100000 * 100) / 100 + ' mb'} </div>
+                : <div><i class="bi bi-exclamation-triangle" style={{color: "#C9CB52", display: formik.errors.laptop_image ? "inline-block" : "none"}}></i><p style={{color: "red"}}>{formik.errors.laptop_image}</p></div>
+            }
             </div>
             
             <div className='row'>
