@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/redberry/static/css/main.20c98780.css",
-    "main.js": "/redberry/static/js/main.0704a699.js",
+    "main.css": "/redberry/static/css/main.e7e001e2.css",
+    "main.js": "/redberry/static/js/main.717969be.js",
     "static/js/787.241a1647.chunk.js": "/redberry/static/js/787.241a1647.chunk.js",
     "static/media/HelveticaNeue.ttc": "/redberry/static/media/HelveticaNeue.67d426c3bd180e2ea838.ttc",
     "static/media/Layer1.png": "/redberry/static/media/Layer1.c937cc28c0487727731b.png",
     "index.html": "/redberry/index.html",
-    "main.20c98780.css.map": "/redberry/static/css/main.20c98780.css.map",
-    "main.0704a699.js.map": "/redberry/static/js/main.0704a699.js.map",
+    "main.e7e001e2.css.map": "/redberry/static/css/main.e7e001e2.css.map",
+    "main.717969be.js.map": "/redberry/static/js/main.717969be.js.map",
     "787.241a1647.chunk.js.map": "/redberry/static/js/787.241a1647.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.20c98780.css",
-    "static/js/main.0704a699.js"
+    "static/css/main.e7e001e2.css",
+    "static/js/main.717969be.js"
   ]
 }
